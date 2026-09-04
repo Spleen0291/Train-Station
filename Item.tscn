@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0ocwda6a6se6"]
+
+[ext_resource type="Script" uid="uid://cgak7ej53g00j" path="res://Item.gd" id="1_bp1wp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ph0dh"]
+size = Vector3(0.1, 0.065, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bp1wp"]
+albedo_color = Color(0.7767582, 0.42718846, 1.92523e-07, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6m5p0"]
+material = SubResource("StandardMaterial3D_bp1wp")
+size = Vector3(0.1, 0.065, 0.02)
+
+[node name="Item" type="StaticBody3D" groups=["Pickupable"]]
+collision_layer = 2
+script = ExtResource("1_bp1wp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ph0dh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_6m5p0")

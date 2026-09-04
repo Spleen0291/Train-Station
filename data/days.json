@@ -1,0 +1,61 @@
+{
+  "days": [
+	{
+	  "day_num": 1,
+	  "trains": [
+		{ "train_id": "12345", "platform": 1, "status": 1 },
+		{ "train_id": "12011", "platform": 2, "status": 1 }
+	  ]
+	},
+	{
+	  "day_num": 2,
+	  "trains": [
+		{ "train_id": "14681", "platform": 1, "status": 1 },
+		{ "train_id": "18238", "platform": 2, "status": 2 }
+	  ]
+	},
+	{
+	  "day_num": 3,
+	  "trains": [
+		{ "train_id": "12345", "platform": 1, "status": 3 },
+		{ "train_id": "12011", "platform": 2, "status": 1 },
+		{ "train_id": "12483", "platform": 1, "status": 2 }
+	  ]
+	},
+	{
+	  "day_num": 4,
+	  "trains": [
+		{ "train_id": "14681", "platform": 1, "status": 1 },
+		{ "train_id": "18238", "platform": 2, "status": 2 },
+		{ "train_id": "12345", "platform": 1, "status": 2 }
+	  ]
+	},
+	{
+	  "day_num": 5,
+	  "trains": [
+		{ "train_id": "12345", "platform": 1, "status": 1 },
+		{ "train_id": "12011", "platform": 1, "status": 3 },
+		{ "train_id": "14681", "platform": 2, "status": 1 },
+		{ "train_id": "18238", "platform": 2, "status": 2 }
+	  ]
+	},
+	{
+	  "day_num": 6,
+	  "trains": [
+		{ "train_id": "12011", "platform": 1, "status": 3 },
+		{ "train_id": "14681", "platform": 1, "status": 3 },
+		{ "train_id": "18238", "platform": 2, "status": 2 },
+		{ "train_id": "12483", "platform": 1, "status": 1 }
+	  ]
+	},
+	{
+	  "day_num": 7,
+	  "trains": [
+		{ "train_id": "12345", "platform": 1, "status": 2 },
+		{ "train_id": "12011", "platform": 2, "status": 2 },
+		{ "train_id": "18238", "platform": 1, "status": 3 },
+		{ "train_id": "12483", "platform": 2, "status": 1 }
+	  ]
+	}
+  ]
+}

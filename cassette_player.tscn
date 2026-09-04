@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxx3l0ernprhq"]
+
+[ext_resource type="Script" uid="uid://dplb3e03u53ia" path="res://cassette_player.gd" id="1_kvgqo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q6gns"]
+size = Vector3(0.514, 0.3, 0.255)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvgqo"]
+albedo_color = Color(0.11094671, 0.511557, 0.44928783, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kvgqo"]
+material = SubResource("StandardMaterial3D_kvgqo")
+size = Vector3(0.514, 0.3, 0.255)
+
+[node name="Cassette Player" type="StaticBody3D" groups=["CassettePlayer"]]
+script = ExtResource("1_kvgqo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_q6gns")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_kvgqo")
+
+[node name="AttachPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.019528136, 0.14906459)
