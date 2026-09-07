@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8hfnsavubh28"]
+
+[ext_resource type="Script" uid="uid://12hs74baav1u" path="res://ticket_request_board.gd" id="1_ticket"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ticket"]
+size = Vector2(1.4, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ticket"]
+resource_local_to_scene = true
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ticket"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_ticket")
+
+[node name="TicketRequestBoard" type="Node3D"]
+visible = false
+script = ExtResource("1_ticket")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(200, 150)
+
+[node name="MessageBox" type="Panel" parent="SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/MessageBox"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.08
+anchor_top = 0.12
+anchor_right = 0.92
+anchor_bottom = 0.88
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="RequestLabel" type="Label" parent="SubViewport/MessageBox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Ticket Request"
+horizontal_alignment = 1
+
+[node name="DestinationLabel" type="Label" parent="SubViewport/MessageBox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "To: Delhi"
+horizontal_alignment = 1
+
+[node name="CoachLabel" type="Label" parent="SubViewport/MessageBox/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Coach: Sleeper"
+horizontal_alignment = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_ticket")
+surface_material_override/0 = SubResource("StandardMaterial3D_ticket")

@@ -2,23 +2,67 @@
 	"trains": [
 		{
 			"train_id": "12345",
-			"train_name": "Delhi-Chandigarh Express"
+			"train_name": "Vande Bharat Express",
+			"destinations": [
+				"Morak",
+				"Karanpur",
+				"Jaloda",
+				"Bansol",
+				"Sri Ganganagar",
+				"Siron",
+				"Ratnagarh",
+				"Kolar",
+				"Rainagar",
+				"Sadarwala"
+			]
 		},
 		{
 			"train_id": "12011",
-			"train_name": "Shatabdi Express"
+			"train_name": "Shatabdi Express",
+			"destinations": [
+				"Dasan",
+				"Varna",
+				"Vijaynagar",
+				"Mandor",
+				"Bhandor",
+				"Rainagar",
+				"Pali",
+				"Luni"
+			]
 		},
 		{
 			"train_id": "14681",
-			"train_name": "Kaalnagar Express"
+			"train_name": "Kaalnagar Express",
+			"destinations":[
+				"Dasan",
+				"Varna",
+				"Ruda",
+				"Navad",
+				"Mehendipur"
+			]
 		},
 		{
 			"train_id": "18238",
-			"train_name": "Rajasthan Express"
+			"train_name": "Rajasthan Express",
+			"destinations":[
+				"Dasan",
+				"Varna",
+				"Vijaynagar",
+				"Nihalpur",
+				"Kankalnagar"
+			]
 		},
 		{
 			"train_id": "12483",
-			"train_name": "Rajdhani Express"
+			"train_name": "Rajdhani Express",
+			"destinations":[
+				"Morak",
+				"Karanpur",
+				"Jaloda",
+				"Bansol",
+				"Sri Ganganagar",
+				"Abohar"
+			]
 		}
 	]
 }

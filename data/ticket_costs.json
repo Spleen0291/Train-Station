@@ -1,0 +1,29 @@
+{
+  "connections": [
+    { "from": "Abohar", "to": "Sri Ganganagar", "cost": 27 },
+    { "from": "Bansol", "to": "Sri Ganganagar", "cost": 34 },
+    { "from": "Jaloda", "to": "Bansol", "cost": 22 },
+    { "from": "Karanpur", "to": "Jaloda", "cost": 38 },
+    { "from": "Sri Ganganagar", "to": "Siron", "cost": 25 },
+    { "from": "Siron", "to": "Ratnagarh", "cost": 31 },
+    { "from": "Karanpur", "to": "Morak", "cost": 29 },
+    { "from": "Morak", "to": "Kaalnagar", "cost": 36 },
+    { "from": "Kaalnagar", "to": "Dasan", "cost": 21 },
+    { "from": "Dasan", "to": "Varna", "cost": 33 },
+    { "from": "Mehendipur", "to": "Navad", "cost": 24 },
+    { "from": "Navad", "to": "Ruda", "cost": 39 },
+    { "from": "Ruda", "to": "Varna", "cost": 28 },
+    { "from": "Varna", "to": "Vijaynagar", "cost": 23 },
+    { "from": "Vijaynagar", "to": "Mandor", "cost": 37 },
+    { "from": "Mandor", "to": "Bhandor", "cost": 26 },
+    { "from": "Bhandor", "to": "Rainagar", "cost": 35 },
+    { "from": "Ratnagarh", "to": "Kolar", "cost": 32 },
+    { "from": "Kolar", "to": "Rainagar", "cost": 20 },
+    { "from": "Rainagar", "to": "Pali", "cost": 33 },
+    { "from": "Pali", "to": "Luni", "cost": 27 },
+    { "from": "Rainagar", "to": "Sadarwala", "cost": 38 },
+    { "from": "Vijaynagar", "to": "Nihalpur", "cost": 22 },
+    { "from": "Nihalpur", "to": "Parlokpur", "cost": 39 },
+    { "from": "Nihalpur", "to": "Kankalnagar", "cost": 31 }
+  ]
+}

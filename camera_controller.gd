@@ -1,11 +1,14 @@
 extends Camera3D
 
+const CALCULATOR_UI_SCENE := preload("res://calculator_ui.tscn")
+
 @export var CAMERA_SENS = 0.003
 @export var PICKUP_RANGE = 3.0
 @export var prompt_label: Label
 @export var playing_label: Label
 @export var assembled_label: Label
 @export var keybind_panel: Control
+@export var map_overlay: TextureRect
 @export var announcement_manager: AnnouncementManager
 @export var hold_position: Node3D
 @export var cassette_player: CassettePlayer
@@ -15,6 +18,10 @@ extends Camera3D
 @export var HOLD_REPEAT_INTERVAL := 0.1
 
 var pointer_timer: Timer
+var fare_dialog: Window
+var fare_input: LineEdit
+var coach_buttons: Dictionary = {}
+var calculator_panel: Control
 var pointer_index: int = 0
 var pointer_text: String = ""
 var assembled_phrase_for_check: String = ""
@@ -33,10 +40,10 @@ var hold_right: bool = false
 var left_acc: float = 0.0
 var right_acc: float = 0.0
 var last_train_key: String = ""
-
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	get_tree().set_meta("player_input_locked", false)
+	_create_fare_dialog()
 	var game_manager = _get_game_manager()
 	if game_manager:
 		last_train_key = _get_train_key(game_manager)
@@ -153,10 +160,33 @@ func _check_for_pickup() -> void:
 
 	var collider = result.collider
 
-	if collider.is_in_group("Pickupable"):
+	if collider.is_in_group("Stamp"):
+		current_target = collider
+		prompt_label.visible = true
+		if held_item is Ticket:
+			prompt_label.text = "Press F to stamp ticket"
+		else:
+			prompt_label.text = "Press E to set fare"
+
+	elif collider.is_in_group("Calculator"):
+		current_target = collider
+		prompt_label.visible = true
+		prompt_label.text = "Press E to use calculator"
+
+	elif collider.is_in_group("Pickupable"):
 		current_target = collider
 		prompt_label.visible = true
 		prompt_label.text = "Press E to pick up " + current_target.item_name
+
+	elif collider.has_method("accept_ticket") and held_item is Ticket:
+		current_target = collider
+		prompt_label.visible = true
+		prompt_label.text = "Press E to give ticket"
+
+	elif collider.is_in_group("RouteMap"):
+		current_target = collider
+		prompt_label.visible = true
+		prompt_label.text = "Hold right click to inspect map"
 
 	elif collider.is_in_group("CassettePlayer") and held_item:
 		if not collider.held_cassette:
@@ -190,6 +220,44 @@ func _input(event) -> void:
 
 	if keybind_panel and keybind_panel.visible:
 		return
+
+	if fare_dialog and fare_dialog.visible:
+		if event.is_action_pressed("run") and current_target and current_target.is_in_group("Stamp"):
+			_close_fare_dialog()
+			_stamp_ticket(current_target)
+		return
+
+	if calculator_panel and calculator_panel.visible:
+		if event.is_action_pressed("interact"):
+			_close_calculator_panel()
+		return
+
+	if event.is_action_pressed("interact") and current_target and current_target.is_in_group("Stamp"):
+		_open_fare_dialog(current_target)
+		return
+
+	if event.is_action_pressed("run") and current_target and current_target.is_in_group("Stamp"):
+		_stamp_ticket(current_target)
+		return
+
+	if event.is_action_pressed("interact") and current_target and current_target.is_in_group("Calculator"):
+		_open_calculator_panel()
+		return
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and held_item is Ticket:
+		if event.pressed:
+			held_item.show_inspection()
+		else:
+			held_item.hide_inspection()
+		return
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and map_overlay:
+		if event.pressed and current_target and current_target.is_in_group("RouteMap"):
+			map_overlay.visible = true
+			return
+		if not event.pressed and map_overlay.visible:
+			map_overlay.visible = false
+			return
 
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
@@ -264,6 +332,18 @@ func _input(event) -> void:
 			current_target.pickup(hold_position)
 			held_item = current_target
 
+		elif current_target.has_method("accept_ticket") and held_item is Ticket:
+			var game_manager := _get_game_manager()
+			var submitted_ticket: Ticket = held_item
+			var ticket_accepted: bool = current_target.accept_ticket(submitted_ticket)
+			if ticket_accepted:
+				if game_manager:
+					game_manager.change_confusion_percent(-5.0)
+			elif game_manager:
+				game_manager.change_confusion_percent(15.0)
+			submitted_ticket.consume()
+			held_item = null
+
 		elif current_target.is_in_group("CassettePlayer") and held_item:
 			var inserted = current_target.insert(held_item)
 			if inserted:
@@ -335,6 +415,98 @@ func _input(event) -> void:
 		rotation.y -= event.relative.x * CAMERA_SENS
 		rotation.x -= event.relative.y * CAMERA_SENS
 		rotation.x = clamp(rotation.x, deg_to_rad(-80), deg_to_rad(80))
+
+
+func _create_fare_dialog() -> void:
+	fare_dialog = Window.new()
+	fare_dialog.visible = false
+	fare_dialog.title = "Set Ticket Fare"
+	fare_dialog.size = Vector2i(480, 220)
+	fare_dialog.unresizable = true
+	var content := VBoxContainer.new()
+	content.custom_minimum_size = Vector2(440, 170)
+	var coach_row := HBoxContainer.new()
+	coach_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	for coach in ["General", "Sleeper", "AC Chair Car", "First Class"]:
+		var coach_button := Button.new()
+		coach_button.text = coach
+		coach_button.toggle_mode = true
+		coach_button.custom_minimum_size = Vector2(100, 40)
+		coach_button.pressed.connect(_select_coach.bind(coach))
+		coach_buttons[coach] = coach_button
+		coach_row.add_child(coach_button)
+	content.add_child(coach_row)
+	fare_input = LineEdit.new()
+	fare_input.custom_minimum_size = Vector2(280, 40)
+	fare_input.placeholder_text = "Enter fare"
+	fare_input.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	fare_input.tooltip_text = "Enter a non-negative whole number"
+	content.add_child(fare_input)
+	var set_fare_button := Button.new()
+	set_fare_button.text = "Set Fare"
+	set_fare_button.custom_minimum_size = Vector2(280, 40)
+	set_fare_button.pressed.connect(_set_fare_from_dialog)
+	content.add_child(set_fare_button)
+	fare_dialog.add_child(content)
+	fare_dialog.close_requested.connect(_close_fare_dialog)
+	get_tree().current_scene.add_child.call_deferred(fare_dialog)
+	_create_calculator_panel()
+
+func _create_calculator_panel() -> void:
+	calculator_panel = CALCULATOR_UI_SCENE.instantiate() as Control
+	calculator_panel.visible = false
+	if keybind_panel:
+		keybind_panel.get_parent().add_child.call_deferred(calculator_panel)
+
+func _open_calculator_panel() -> void:
+	if calculator_panel == null or calculator_panel.visible:
+		return
+	calculator_panel.visible = true
+	get_tree().set_meta("player_input_locked", true)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+func _close_calculator_panel() -> void:
+	calculator_panel.visible = false
+	get_tree().set_meta("player_input_locked", false)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _stamp_ticket(stamp: Node3D) -> void:
+	if held_item is Ticket and stamp.stamp_ticket(held_item):
+		prompt_label.text = "Ticket stamped"
+
+func _open_fare_dialog(stamp: Node3D) -> void:
+	if fare_dialog == null or fare_dialog.visible:
+		return
+	fare_dialog.set_meta("stamp", stamp)
+	var fare_price := int(stamp.get("fare_price"))
+	fare_input.text = "" if fare_price < 0 else str(fare_price)
+	var selected_coach: String = str(stamp.get("coach_type"))
+	for coach in coach_buttons:
+		coach_buttons[coach].set_pressed_no_signal(coach == selected_coach)
+	fare_dialog.popup_centered()
+	get_tree().set_meta("player_input_locked", true)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	fare_input.grab_focus()
+	fare_input.select_all()
+
+func _select_coach(coach: String) -> void:
+	var stamp := fare_dialog.get_meta("stamp") as Node3D
+	if stamp and stamp.has_method("set_coach"):
+		stamp.set_coach(coach)
+	for available_coach in coach_buttons:
+		coach_buttons[available_coach].set_pressed_no_signal(available_coach == coach)
+
+func _set_fare_from_dialog() -> void:
+	var stamp := fare_dialog.get_meta("stamp") as Node3D
+	if stamp and stamp.has_method("set_fare") and fare_input.text.is_valid_int() and int(fare_input.text) >= 0:
+		stamp.set_fare(int(fare_input.text))
+		prompt_label.text = "Fare set to Rs. " + str(int(stamp.get("fare_price")))
+		_close_fare_dialog()
+
+func _close_fare_dialog() -> void:
+	fare_dialog.hide()
+	get_tree().set_meta("player_input_locked", false)
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _add_to_announcement(phrase: String) -> void:
 	if current_announcement == "":

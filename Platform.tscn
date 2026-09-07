@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://back4imy1ex8s"]
+[gd_scene load_steps=21 format=3 uid="uid://back4imy1ex8s"]
 
 [ext_resource type="Material" uid="uid://bcjagsehamntr" path="res://kenney_prototype-textures/grid.tres" id="1_7gn3u"]
 [ext_resource type="Script" uid="uid://buxruxv1qvkea" path="res://character_body_3d.gd" id="2_h1g3r"]
@@ -10,6 +10,23 @@
 [ext_resource type="PackedScene" uid="uid://bqsce00fvakux" path="res://departure_board.tscn" id="8_b7wx0"]
 [ext_resource type="Script" uid="uid://c72qgxm37ymgj" path="res://game_manager.gd" id="9_exmwa"]
 [ext_resource type="Script" uid="uid://csnod2gkdsvxr" path="res://announcement_manager.gd" id="10_siqrc"]
+[ext_resource type="PackedScene" uid="uid://bm230dsbcxopo" path="res://ticket_board.tscn" id="14_board"]
+[ext_resource type="Script" uid="uid://b8gnxtw8ti3sp" path="res://npc_manager.gd" id="15_npc_manager"]
+[ext_resource type="PackedScene" uid="uid://cfyn3bwsuvpy6" path="res://data/calculator.tscn" id="15_phawi"]
+[ext_resource type="PackedScene" uid="uid://dyv1tsgegwxdr" path="res://data/stamp.tscn" id="16_stamp"]
+[ext_resource type="Texture2D" uid="uid://b06lb7kw5vwh2" path="res://data/route_map.png" id="17_route_map_overlay"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_route_map"]
+size = Vector3(0.7, 0.7, 0.04)
+
+[sub_resource type="QuadMesh" id="QuadMesh_route_map"]
+size = Vector2(0.7, 0.7)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_route_map"]
+cull_mode = 2
+shading_mode = 0
+albedo_texture = ExtResource("17_route_map_overlay")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_7gn3u"]
 
@@ -256,12 +273,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.040122986, 2.5, 3.0084448)
 size = Vector3(0.22, 3.5, 3.2351074)
 material = ExtResource("1_7gn3u")
 
-[node name="Minus Door" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.056297302, 1.7692704, 2.3416667)
-operation = 2
-size = Vector3(0.25257814, 2, 1)
-material = ExtResource("1_7gn3u")
-
 [node name="Ticket Window" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.043642044, 2.1024218, 3.8025675)
 operation = 2
@@ -273,30 +284,47 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1
 size = Vector3(0.22, 3.5, 4.5)
 material = ExtResource("1_7gn3u")
 
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -3.4125652, 1.7877418, 4.736)
+operation = 2
+size = Vector3(0.24, 2, 1)
+material = ExtResource("1_7gn3u")
+
 [node name="Wall 5" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
 transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -2.1000023, 2.5, 1.4918098)
 size = Vector3(0.22, 3.5, 4.5)
 material = ExtResource("1_7gn3u")
 
 [node name="Counter Table" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
-transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -0.4534521, 1.2256402, 3.855205)
-size = Vector3(1.5454247, 0.8372803, 0.74609375)
+transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -0.45345592, 1.2256402, 3.5059676)
+size = Vector3(2.2439, 0.8372803, 0.74609375)
 material = ExtResource("1_7gn3u")
 
 [node name="Tube Table" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
-transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -3.8159685, 1.1799096, 3.215078)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4679785, 1.1799096, 1.9963126)
 size = Vector3(1.5454247, 0.7458191, 0.5916748)
 material = ExtResource("1_7gn3u")
 
 [node name="Ticket Tube" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
-transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -3.8401384, 1.8900744, 3.2400918)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4751568, 1.8900744, 2.0056949)
 size = Vector3(0.85370237, 0.64227295, 0.38513184)
 material = ExtResource("1_7gn3u")
 
 [node name="Master Seat" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
-transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -1.3918905, 1.0858648, 3.8504403)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.3918905, 1.0858648, 3.8504403)
 size = Vector3(0.6923828, 0.6370392, 0.57958984)
 material = ExtResource("1_7gn3u")
+
+[node name="RouteMap" type="StaticBody3D" parent="CSGCombiner3D/Ticket Room" groups=["RouteMap"]]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.457716, 1.6640147, 4.012946)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGCombiner3D/Ticket Room/RouteMap"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_route_map")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CSGCombiner3D/Ticket Room/RouteMap"]
+mesh = SubResource("QuadMesh_route_map")
+surface_material_override/0 = SubResource("StandardMaterial3D_route_map")
 
 [node name="Announcement Room" type="CSGCombiner3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.244999, 0, 0.83839655)
@@ -430,17 +458,18 @@ shape = SubResource("CylinderShape3D_7gn3u")
 transform = Transform3D(0.5, 0, 0, 0, 0.865, 0, 0, 0, 0.4, 0, 0.365, 0)
 mesh = SubResource("CylinderMesh_8m85o")
 
-[node name="Camera3D" type="Camera3D" parent="Player" node_paths=PackedStringArray("prompt_label", "playing_label", "assembled_label", "keybind_panel", "announcement_manager", "hold_position", "cassette_player", "cassette_recorder")]
+[node name="Camera3D" type="Camera3D" parent="Player" node_paths=PackedStringArray("prompt_label", "playing_label", "assembled_label", "keybind_panel", "map_overlay", "announcement_manager", "hold_position", "cassette_player", "cassette_recorder")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82500005, 0)
 script = ExtResource("3_cam")
 prompt_label = NodePath("../UI/PromptLabel")
 playing_label = NodePath("../UI/PlayingLabel")
 assembled_label = NodePath("../UI/AssembledLabel")
 keybind_panel = NodePath("../UI/KeybindPanel")
-announcement_manager = NodePath("../../AnnouncementManager")
+map_overlay = NodePath("../UI/MapOverlay")
+announcement_manager = NodePath("../../AnnouncementSystem/AnnouncementManager")
 hold_position = NodePath("HoldPosition")
-cassette_player = NodePath("../../Cassette Player")
-cassette_recorder = NodePath("../../CassetteRecorder")
+cassette_player = NodePath("../../AnnouncementSystem/Cassette Player")
+cassette_recorder = NodePath("../../AnnouncementSystem/CassetteRecorder")
 
 [node name="HoldPosition" type="Marker3D" parent="Player/Camera3D"]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.3, -0.2, -0.4)
@@ -449,6 +478,24 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.3,
 one_shot = true
 
 [node name="UI" type="CanvasLayer" parent="Player"]
+
+[node name="MapOverlay" type="TextureRect" parent="Player/UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -350.0
+offset_right = 350.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("17_route_map_overlay")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="PromptLabel" type="Label" parent="Player/UI"]
 anchors_preset = 7
@@ -499,7 +546,7 @@ offset_bottom = -59.0
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 0.75, 0.2, 1)
 theme_override_font_sizes/font_size = 24
-text = "CONFUSION"
+text = "REPUTATION"
 
 [node name="ConfusionBar" type="ProgressBar" parent="Player/UI"]
 anchors_preset = 2
@@ -537,7 +584,7 @@ offset_bottom = 42.0
 grow_horizontal = 0
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
-text = "180"
+text = "300"
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -590,71 +637,88 @@ offset_right = 475.5
 offset_bottom = 432.0
 text = "Reset"
 
-[node name="keywords" parent="." instance=ExtResource("4_8m85o")]
+[node name="AnnouncementSystem" type="Node3D" parent="."]
+
+[node name="keywords" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 7.6405926)
 item_name = "key words"
 phrase = "Passengers, Please pay Attention. / Train number: / platform / Sorry for any inconvenience caused."
 
-[node name="digits" parent="." instance=ExtResource("4_8m85o")]
+[node name="digits" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 7.8524384)
 item_name = "digits"
 phrase = "0 / 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9"
 
-[node name="train names" parent="." instance=ExtResource("4_8m85o")]
+[node name="train names" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 8.072266)
 item_name = "train names"
-phrase = "Delhi-Chandigarh / Shatabdi / Kaalnagar / Rajasthan / Rajdhani / express"
+phrase = "Vande Bharat / Shatabdi / Kaalnagar / Rajasthan / Rajdhani / express"
 
-[node name="train status" parent="." instance=ExtResource("4_8m85o")]
+[node name="train status" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 8.294447)
 item_name = "status"
 phrase = "will be arriving on / has been delayed. / has been canceled."
 
-[node name="Blank" parent="." instance=ExtResource("4_8m85o")]
+[node name="Blank" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 8.510199)
 item_name = "Blank"
 
-[node name="Blank1" parent="." instance=ExtResource("4_8m85o")]
+[node name="Blank1" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 7.6405926)
 item_name = "Blank1"
 
-[node name="Blank2" parent="." instance=ExtResource("4_8m85o")]
+[node name="Blank2" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 7.8524384)
 item_name = "Blank2"
 
-[node name="Blank3" parent="." instance=ExtResource("4_8m85o")]
+[node name="Blank3" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 8.072266)
 item_name = "Blank3"
 
-[node name="Blank4" parent="." instance=ExtResource("4_8m85o")]
+[node name="Blank4" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 8.294447)
 item_name = "Blank4"
 
-[node name="Blank5" parent="." instance=ExtResource("4_8m85o")]
+[node name="Blank5" parent="AnnouncementSystem" instance=ExtResource("4_8m85o")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 8.510199)
 item_name = "Blank5"
 
-[node name="Cassette Player" parent="." instance=ExtResource("6_2xqv2")]
+[node name="Cassette Player" parent="AnnouncementSystem" instance=ExtResource("6_2xqv2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.849, 1.918, 6.669)
 
-[node name="CassetteRecorder" parent="." instance=ExtResource("7_24nm6")]
+[node name="CassetteRecorder" parent="AnnouncementSystem" instance=ExtResource("7_24nm6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.578, 2.078, 6.65)
 
-[node name="DepartureBoard" parent="." instance=ExtResource("8_b7wx0")]
+[node name="DepartureBoard" parent="AnnouncementSystem" instance=ExtResource("8_b7wx0")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.590814, 2.1878586, 9.483356)
+
+[node name="AnnouncementManager" type="Node3D" parent="AnnouncementSystem" node_paths=PackedStringArray("game_manager")]
+script = ExtResource("10_siqrc")
+game_manager = NodePath("../../GameManager")
 
 [node name="GameManager" type="Node3D" parent="." node_paths=PackedStringArray("announcement_manager", "departure_board", "timerLabel", "confusion_bar")]
 script = ExtResource("9_exmwa")
-announcement_manager = NodePath("../AnnouncementManager")
-departure_board = NodePath("../DepartureBoard")
+announcement_manager = NodePath("../AnnouncementSystem/AnnouncementManager")
+departure_board = NodePath("../AnnouncementSystem/DepartureBoard")
 timerLabel = NodePath("../Player/UI/TimerLabel")
 confusion_bar = NodePath("../Player/UI/ConfusionBar")
 
 [node name="TaskTimer" type="Timer" parent="GameManager"]
 
-[node name="AnnouncementManager" type="Node3D" parent="." node_paths=PackedStringArray("game_manager")]
-script = ExtResource("10_siqrc")
-game_manager = NodePath("../GameManager")
+[node name="TicketSystem" type="Node3D" parent="."]
+
+[node name="NpcManager" type="Node3D" parent="TicketSystem" node_paths=PackedStringArray("game_manager")]
+script = ExtResource("15_npc_manager")
+game_manager = NodePath("../../GameManager")
+
+[node name="board" parent="TicketSystem" instance=ExtResource("14_board")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9.80754, 1.8700751, 5.50674)
+
+[node name="FareStamp" parent="TicketSystem" instance=ExtResource("16_stamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.793103, 1.7414789, 5.0193453)
+
+[node name="calculator" parent="TicketSystem" instance=ExtResource("15_phawi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.813882, 1.6233222, 4.2088633)
 
 [connection signal="pressed" from="Player/UI/KeybindPanel/QuitButton" to="GameManager" method="quit_game"]
 [connection signal="pressed" from="Player/UI/KeybindPanel/ResetWorldButton" to="GameManager" method="reset_world"]

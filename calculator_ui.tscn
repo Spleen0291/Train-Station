@@ -1,0 +1,158 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccraxi03vcwov"]
+
+[ext_resource type="Script" uid="uid://w211elxefoh" path="res://calculator_ui.gd" id="1_calculator"]
+[ext_resource type="Texture2D" uid="uid://b06lb7kw5vwh2" path="res://data/route_map.png" id="2_route_map"]
+
+[node name="CalculatorUI" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -250.0
+offset_right = 900.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CalculatorPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = -200.0
+offset_right = 160.0
+offset_bottom = 385.0
+script = ExtResource("1_calculator")
+
+[node name="Content" type="VBoxContainer" parent="CalculatorPanel"]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 340.0
+offset_bottom = 480.0
+
+[node name="Display" type="LineEdit" parent="CalculatorPanel/Content"]
+custom_minimum_size = Vector2(320, 45)
+layout_mode = 2
+text = "0"
+alignment = 2
+editable = false
+
+[node name="CalculatorGrid" type="GridContainer" parent="CalculatorPanel/Content"]
+custom_minimum_size = Vector2(320, 220)
+layout_mode = 2
+columns = 4
+
+[node name="Seven" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "7"
+
+[node name="Eight" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "8"
+
+[node name="Nine" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "9"
+
+[node name="Divide" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "/"
+
+[node name="Four" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "4"
+
+[node name="Five" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "5"
+
+[node name="Six" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "6"
+
+[node name="Multiply" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "*"
+
+[node name="One" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "1"
+
+[node name="Two" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "2"
+
+[node name="Three" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "3"
+
+[node name="Subtract" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "-"
+
+[node name="Clear" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "C"
+
+[node name="Zero" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "0"
+
+[node name="Equals" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "="
+
+[node name="Add" type="Button" parent="CalculatorPanel/Content/CalculatorGrid"]
+custom_minimum_size = Vector2(72, 55)
+layout_mode = 2
+text = "+"
+
+[node name="DiscountRow" type="HBoxContainer" parent="CalculatorPanel/Content"]
+custom_minimum_size = Vector2(320, 45)
+layout_mode = 2
+alignment = 1
+
+[node name="Child" type="Button" parent="CalculatorPanel/Content/DiscountRow"]
+custom_minimum_size = Vector2(100, 45)
+layout_mode = 2
+text = "child"
+metadata/discount_rate = 0.5
+
+[node name="Female" type="Button" parent="CalculatorPanel/Content/DiscountRow"]
+custom_minimum_size = Vector2(100, 45)
+layout_mode = 2
+text = "female"
+metadata/discount_rate = 0.25
+
+[node name="Senior" type="Button" parent="CalculatorPanel/Content/DiscountRow"]
+custom_minimum_size = Vector2(100, 45)
+layout_mode = 2
+text = "senior"
+metadata/discount_rate = 0.4
+
+[node name="RouteMap" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 185.0
+offset_top = -228.0
+offset_right = 1346.0
+offset_bottom = 724.0
+mouse_filter = 2
+texture = ExtResource("2_route_map")
+expand_mode = 3
+stretch_mode = 5
