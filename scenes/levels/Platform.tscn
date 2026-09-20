@@ -1,0 +1,752 @@
+[gd_scene load_steps=25 format=3 uid="uid://back4imy1ex8s"]
+
+[ext_resource type="Material" uid="uid://bcjagsehamntr" path="res://kenney_prototype-textures/grid.tres" id="1_7gn3u"]
+[ext_resource type="Script" uid="uid://buxruxv1qvkea" path="res://scenes/player/character_body_3d.gd" id="2_h1g3r"]
+[ext_resource type="Script" uid="uid://dnp45gbohbtl7" path="res://scenes/player/camera_controller.gd" id="3_cam"]
+[ext_resource type="Script" uid="uid://240kglgusvo" path="res://scenes/player/control.gd" id="4_7ay8b"]
+[ext_resource type="PackedScene" uid="uid://b0ocwda6a6se6" path="res://scenes/announcement_system/Item.tscn" id="4_8m85o"]
+[ext_resource type="PackedScene" uid="uid://cxx3l0ernprhq" path="res://scenes/announcement_system/Cassette Player/cassette_player.tscn" id="6_2xqv2"]
+[ext_resource type="PackedScene" uid="uid://fsuwltil5gas" path="res://scenes/announcement_system/Cassette Recorder/cassette_recorder.tscn" id="7_24nm6"]
+[ext_resource type="Script" uid="uid://dywlah6kayk5y" path="res://scenes/announcement_system/announcement_system.gd" id="8_announcement"]
+[ext_resource type="PackedScene" uid="uid://bqsce00fvakux" path="res://scenes/announcement_system/departure_board.tscn" id="8_b7wx0"]
+[ext_resource type="Script" uid="uid://c72qgxm37ymgj" path="res://scripts/core/game_manager.gd" id="9_exmwa"]
+[ext_resource type="Script" uid="uid://csnod2gkdsvxr" path="res://scenes/announcement_system/announcement_manager.gd" id="10_siqrc"]
+[ext_resource type="PackedScene" uid="uid://bm230dsbcxopo" path="res://scenes/ticket_system/ticket_board.tscn" id="14_board"]
+[ext_resource type="Script" uid="uid://b8gnxtw8ti3sp" path="res://scenes/ticket_system/npc_manager.gd" id="15_npc_manager"]
+[ext_resource type="PackedScene" uid="uid://cfyn3bwsuvpy6" path="res://scenes/ticket_system/calculator.tscn" id="15_phawi"]
+[ext_resource type="PackedScene" uid="uid://dyv1tsgegwxdr" path="res://scenes/ticket_system/stamp.tscn" id="16_stamp"]
+[ext_resource type="Texture2D" uid="uid://b06lb7kw5vwh2" path="res://assets/textures/route_map.png" id="17_route_map_overlay"]
+[ext_resource type="Script" uid="uid://cfahe1jfg4wd2" path="res://scenes/announcement_system/cassette_rack.gd" id="18_rack"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_route_map"]
+size = Vector3(0.7, 0.7, 0.04)
+
+[sub_resource type="QuadMesh" id="QuadMesh_route_map"]
+size = Vector2(0.7, 0.7)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_route_map"]
+cull_mode = 2
+shading_mode = 0
+albedo_texture = ExtResource("17_route_map_overlay")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7gn3u"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8m85o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_announcement_system"]
+size = Vector3(0.8729248, 0.21002197, 0.26104736)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6l62i"]
+size = Vector3(0.09399414, 0.5279541, 1.0508423)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.32886666, 0.63191116, -0.7018084, 0, 0.7431448, 0.6691306, 0.94437635, -0.22005476, 0.24439555, 6.4051495, 4.802139, 5.558995)
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.17364822, 0.6963642, 0.6963642, 0, -0.70710677, 0.70710677, 0.9848077, -0.12278783, -0.12278783, 1.4963553, 4.8314695, 2.9621034)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Station Master Room" type="CSGCombiner3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0305835, 3.9458938)
+
+[node name="Table" type="CSGPolygon3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(-4.371139e-08, 0, 0.6, 0, 0.75, 0, -1, 0, -2.6226834e-08, -3.443241, 0.7769917, 4.4402885)
+polygon = PackedVector2Array(0, 0, 0, 1, 1.1329441, 0.998147, 1.1323733, 0.0030120611)
+material = ExtResource("1_7gn3u")
+
+[node name="TOken Machine" type="CSGPolygon3D" parent="CSGCombiner3D/Station Master Room/Table"]
+transform = Transform3D(-2.9155494e-08, 0, -0.4, 0, 0.66699994, 0, 0.6669999, 0, -1.7484547e-08, 0.113161564, 0.99474573, -0.8111272)
+polygon = PackedVector2Array(0, 0, 0.34100562, 0.9995272, 1, 1, 1, 0)
+material = ExtResource("1_7gn3u")
+
+[node name="TOken Machine2" type="CSGPolygon3D" parent="CSGCombiner3D/Station Master Room/Table"]
+transform = Transform3D(-2.9155494e-08, 0, -0.4, 0, 0.66699994, 0, 0.6669999, 0, -1.7484547e-08, 0.6030874, 0.99474573, -0.8111272)
+polygon = PackedVector2Array(0, 0, 0.34100562, 0.9995272, 1, 1, 1, 0)
+material = ExtResource("1_7gn3u")
+
+[node name="Table2" type="CSGPolygon3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(-1, 0, -5.2453668e-08, 0, 0.75, 0, 8.742278e-08, 0, -0.6, -2.018394, 0.7769917, 5.006298)
+polygon = PackedVector2Array(0, 0, 0, 1, 1.1329441, 0.998147, 1.1323733, 0.0030120611)
+material = ExtResource("1_7gn3u")
+
+[node name="TOken Machine" type="CSGPolygon3D" parent="CSGCombiner3D/Station Master Room/Table2"]
+transform = Transform3D(-2.9155494e-08, 0, -0.4, 0, 0.66699994, 0, 0.6669999, 0, -1.7484547e-08, 0.113161564, 0.99474573, -0.8111272)
+polygon = PackedVector2Array(0, 0, 0.34100562, 0.9995272, 1, 1, 1, 0)
+material = ExtResource("1_7gn3u")
+
+[node name="TOken Machine2" type="CSGPolygon3D" parent="CSGCombiner3D/Station Master Room/Table2"]
+transform = Transform3D(-2.9155494e-08, 0, -0.4, 0, 0.66699994, 0, 0.6669999, 0, -1.7484547e-08, 0.6030874, 0.99474573, -0.8111272)
+polygon = PackedVector2Array(0, 0, 0.34100562, 0.9995272, 1, 1, 1, 0)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 1" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.24, 2.5, 2.3872)
+size = Vector3(0.22, 3.5, 6.5224)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 3" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04012865, 2.5, 2.3821642)
+size = Vector3(0.22, 3.5, 6.512329)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Window" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.035533488, 1.7393025, 0.45077944)
+operation = 2
+size = Vector3(0.25, 0.8, 0.8)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04012865, 1.7692704, 4.07955)
+operation = 2
+size = Vector3(0.22, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 2" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 2.5, 5.747178)
+size = Vector3(0.22, 3.5, 4.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 2.5, -0.984)
+size = Vector3(0.22, 3.5, 4.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Master Table" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2855608, 1.182, 1.6860001)
+size = Vector3(2.055449, 0.75, 0.74609375)
+material = ExtResource("1_7gn3u")
+
+[node name="Telegraph Table" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.7180042, 1.182, 0.5955353)
+size = Vector3(2.9239793, 0.75, 0.8051758)
+material = ExtResource("1_7gn3u")
+
+[node name="Telegraph" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.7841969, 1.7228471, 0.54793406)
+size = Vector3(0.5358676, 0.34570313, 0.37322998)
+material = ExtResource("1_7gn3u")
+
+[node name="Master Seat" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.211873, 1.0288961, 0.2500651)
+size = Vector3(0.6923828, 0.5231018, 0.57958984)
+material = ExtResource("1_7gn3u")
+
+[node name="Guest Seat 1" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6287532, 1.0288961, 2.5038192)
+size = Vector3(0.6923828, 0.5231018, 0.57958984)
+material = ExtResource("1_7gn3u")
+
+[node name="Guest Seat 2" type="CSGBox3D" parent="CSGCombiner3D/Station Master Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7495794, 1.0288961, 2.5038192)
+size = Vector3(0.6923828, 0.5231018, 0.57958984)
+material = ExtResource("1_7gn3u")
+
+[node name="Toilet 1" type="CSGCombiner3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6979947)
+
+[node name="Wall 1" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.6222963, 2.4863281, 4.023682)
+size = Vector3(0.22, 3.4726563, 5.315689)
+material = ExtResource("1_7gn3u")
+
+[node name="Partition Wall" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.932, 2.486, 5.516885)
+size = Vector3(0.22, 3.4726563, 2.6977732)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.25721, 1.2203369, 2.2292888)
+size = Vector3(0.4, 0.8, 0.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 2" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.039, 2.484, 1.265)
+size = Vector3(0.22, 3.473, 3.376)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 3" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.0425615, 2.4865723, 6.790494)
+size = Vector3(0.22, 3.4731445, 3.3796997)
+material = ExtResource("1_7gn3u")
+
+[node name="Toilet Seat" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.0665464, 1.1924837, 6.306075)
+size = Vector3(0.7, 0.85, 0.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Toilet Seat2" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.7881985, 1.1924837, 6.306075)
+size = Vector3(0.7, 0.85, 0.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 5" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.9329004, 2.4865723, 4.060013)
+size = Vector3(0.22, 3.4731445, 3.1603775)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.077229, 1.7567627, 1.2630042)
+operation = 2
+size = Vector3(0.23097168, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door2" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.1066976, 1.7567627, 4.06012)
+operation = 2
+size = Vector3(0.23097168, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door3" type="CSGBox3D" parent="CSGCombiner3D/Toilet 1"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.792552, 1.7567627, 4.06012)
+operation = 2
+size = Vector3(0.23097168, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Toilet 2" type="CSGCombiner3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.376, 0, 1.6979947)
+
+[node name="Wall 1" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.6222963, 2.4863281, 4.023682)
+size = Vector3(0.22, 3.4726563, 5.315689)
+material = ExtResource("1_7gn3u")
+
+[node name="Partition Wall" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.932, 2.486, 5.516885)
+size = Vector3(0.22, 3.4726563, 2.6977732)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.25721, 1.2203369, 2.2292888)
+size = Vector3(0.4, 0.8, 0.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 2" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.039, 2.484, 1.265)
+size = Vector3(0.22, 3.473, 3.376)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 3" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.0425615, 2.4865723, 6.790494)
+size = Vector3(0.22, 3.4731445, 3.3796997)
+material = ExtResource("1_7gn3u")
+
+[node name="Toilet Seat" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.0665464, 1.1924837, 6.306075)
+size = Vector3(0.7, 0.85, 0.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Toilet Seat2" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.7881985, 1.1924837, 6.306075)
+size = Vector3(0.7, 0.85, 0.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 5" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.9329004, 2.4865723, 4.060013)
+size = Vector3(0.22, 3.4731445, 3.1603775)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.077229, 1.7567627, 1.2630042)
+operation = 2
+size = Vector3(0.23097168, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door2" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.1066976, 1.7567627, 4.06012)
+operation = 2
+size = Vector3(0.23097168, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Minus Door3" type="CSGBox3D" parent="CSGCombiner3D/Toilet 2"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6.792552, 1.7567627, 4.06012)
+operation = 2
+size = Vector3(0.23097168, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Ticket Room" type="CSGCombiner3D" parent="CSGCombiner3D"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.297865, -0.0305835, 7.724258)
+
+[node name="Wall 1" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2400007, 2.5, 3.0069814)
+size = Vector3(0.22, 3.5, 3.238037)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 3" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.040122986, 2.5, 3.0084448)
+size = Vector3(0.22, 3.5, 3.2351074)
+material = ExtResource("1_7gn3u")
+
+[node name="Ticket Window" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.043642044, 2.1024218, 3.8025675)
+operation = 2
+size = Vector3(0.25257814, 0.74334717, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 2" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 2.5, 4.736)
+size = Vector3(0.22, 3.5, 4.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -3.4125652, 1.7877418, 4.736)
+operation = 2
+size = Vector3(0.24, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 5" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -2.1000023, 2.5, 1.4918098)
+size = Vector3(0.22, 3.5, 4.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Counter Table" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(-4.371138e-08, 0, 1, 0, 1, 0, -1, 0, -4.371138e-08, -0.45345592, 1.2256402, 3.5059676)
+size = Vector3(2.2439, 0.8372803, 0.74609375)
+material = ExtResource("1_7gn3u")
+
+[node name="Tube Table" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4679785, 1.1799096, 1.9963126)
+size = Vector3(1.5454247, 0.7458191, 0.5916748)
+material = ExtResource("1_7gn3u")
+
+[node name="Ticket Tube" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4751568, 1.8900744, 2.0056949)
+size = Vector3(0.85370237, 0.64227295, 0.38513184)
+material = ExtResource("1_7gn3u")
+
+[node name="Master Seat" type="CSGBox3D" parent="CSGCombiner3D/Ticket Room"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.3918905, 1.0858648, 3.8504403)
+size = Vector3(0.6923828, 0.6370392, 0.57958984)
+material = ExtResource("1_7gn3u")
+
+[node name="RouteMap" type="StaticBody3D" parent="CSGCombiner3D/Ticket Room" groups=["RouteMap"]]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.457716, 1.6640147, 4.012946)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGCombiner3D/Ticket Room/RouteMap"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_route_map")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CSGCombiner3D/Ticket Room/RouteMap"]
+mesh = SubResource("QuadMesh_route_map")
+surface_material_override/0 = SubResource("StandardMaterial3D_route_map")
+
+[node name="Announcement Room" type="CSGCombiner3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.244999, 0, 0.83839655)
+
+[node name="Wall 1" type="CSGBox3D" parent="CSGCombiner3D/Announcement Room"]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 14.642864, 2.4694166, 8.76835)
+size = Vector3(0.22, 3.5, 4.5)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 2" type="CSGBox3D" parent="CSGCombiner3D/Announcement Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.77885, 2.4694166, 7.0850587)
+size = Vector3(0.22, 3.5, 3.1664352)
+material = ExtResource("1_7gn3u")
+
+[node name="Cassette Cabinet" type="CSGBox3D" parent="CSGCombiner3D/Announcement Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.396671, 1.5447326, 7.2532573)
+size = Vector3(0.47842774, 1.6604652, 1.0451317)
+material = ExtResource("1_7gn3u")
+
+[node name="Announcement Table" type="CSGBox3D" parent="CSGCombiner3D/Announcement Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.471964, 1.1560181, 5.805663)
+size = Vector3(1.6473633, 0.7813721, 0.6)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 3" type="CSGBox3D" parent="CSGCombiner3D/Announcement Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.50602, 2.4694166, 7.0815444)
+size = Vector3(0.22, 3.5, 3.1594067)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Announcement Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.50602, 1.7247877, 7.9098926)
+operation = 2
+size = Vector3(0.22, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Lever Room" type="CSGCombiner3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 20.634998, 0, -9.515604)
+
+[node name="Lever Rig" type="CSGBox3D" parent="CSGCombiner3D/Lever Room"]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 14.852967, 0.95122814, 5.1160107)
+size = Vector3(0.37085694, 0.46362305, 3.4378815)
+material = ExtResource("1_7gn3u")
+
+[node name="Lever 1" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, 1.4802599)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 2" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, 1.0559101)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 3" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, 0.61181736)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 4" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, 0.187469)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 5" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, -0.19784069)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 6" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, -0.6221895)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 7" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, -1.0662832)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Lever 8" type="CSGCylinder3D" parent="CSGCombiner3D/Lever Room/Lever Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6801014, -1.4906311)
+radius = 0.025878906
+height = 0.897892
+
+[node name="Wall 1" type="CSGBox3D" parent="CSGCombiner3D/Lever Room"]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 14.784283, 2.4694166, 4.5208454)
+size = Vector3(0.22, 3.5, 4.77771)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 2" type="CSGBox3D" parent="CSGCombiner3D/Lever Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.06437, 2.4694166, 6.308485)
+size = Vector3(0.22, 3.5, 3.3553445)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 3" type="CSGBox3D" parent="CSGCombiner3D/Lever Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.50602, 2.4694166, 6.307514)
+size = Vector3(0.22, 3.5, 3.3581195)
+material = ExtResource("1_7gn3u")
+
+[node name="Wall 4" type="CSGBox3D" parent="CSGCombiner3D/Lever Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.50602, 1.7247877, 7.259411)
+operation = 2
+size = Vector3(0.22, 2, 1)
+material = ExtResource("1_7gn3u")
+
+[node name="Waiting Area" type="CSGCombiner3D" parent="CSGCombiner3D"]
+
+[node name="Bench" type="CSGBox3D" parent="CSGCombiner3D/Waiting Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7201097, 1.2163327, 5.428472)
+size = Vector3(0.63, 0.9, 1.75)
+material = ExtResource("1_7gn3u")
+
+[node name="Bench2" type="CSGBox3D" parent="CSGCombiner3D/Waiting Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8292823, 1.2163327, 5.428472)
+size = Vector3(0.63, 0.9, 1.75)
+material = ExtResource("1_7gn3u")
+
+[node name="Platform" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.127487, 0.26561725, 6.0078897)
+size = Vector3(106.37277, 1, 13.003967)
+material = ExtResource("1_7gn3u")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8094125, 1.2748666, 10.72405)
+script = ExtResource("2_h1g3r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("CylinderShape3D_7gn3u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(0.5, 0, 0, 0, 0.865, 0, 0, 0, 0.4, 0, 0.365, 0)
+mesh = SubResource("CylinderMesh_8m85o")
+
+[node name="Camera3D" type="Camera3D" parent="Player" node_paths=PackedStringArray("prompt_label", "playing_label", "assembled_label", "keybind_panel", "map_overlay", "announcement_manager", "hold_position", "cassette_player", "cassette_recorder")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82500005, 0)
+script = ExtResource("3_cam")
+prompt_label = NodePath("../UI/PromptLabel")
+playing_label = NodePath("../UI/PlayingLabel")
+assembled_label = NodePath("../UI/AssembledLabel")
+keybind_panel = NodePath("../UI/KeybindPanel")
+map_overlay = NodePath("../UI/MapOverlay")
+announcement_manager = NodePath("../../AnnouncementRoom/AnnouncementManager")
+hold_position = NodePath("HoldPosition")
+cassette_player = NodePath("../../AnnouncementRoom/Cassette Player")
+cassette_recorder = NodePath("../../AnnouncementRoom/CassetteRecorder")
+
+[node name="HoldPosition" type="Marker3D" parent="Player/Camera3D"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.3, -0.2, -0.4)
+
+[node name="AnnouncementTimer" type="Timer" parent="Player/Camera3D"]
+one_shot = true
+
+[node name="UI" type="CanvasLayer" parent="Player"]
+
+[node name="MapOverlay" type="TextureRect" parent="Player/UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -350.0
+offset_right = 350.0
+offset_bottom = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("17_route_map_overlay")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PromptLabel" type="Label" parent="Player/UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -34.0
+offset_right = 128.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Press E to pickup Item"
+
+[node name="Crosshair" type="Control" parent="Player/UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_7ay8b")
+
+[node name="PlayingLabel" type="Label" parent="Player/UI"]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 98.0
+offset_right = -104.0
+offset_bottom = 42.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Announcement"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ConfusionLabel" type="Label" parent="Player/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = -87.0
+offset_right = 168.0
+offset_bottom = -59.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.75, 0.2, 1)
+theme_override_font_sizes/font_size = 24
+text = "REPUTATION"
+
+[node name="ConfusionBar" type="ProgressBar" parent="Player/UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = -48.0
+offset_right = 241.0
+offset_bottom = -21.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.99607843)
+
+[node name="AssembledLabel" type="Label" parent="Player/UI"]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -123.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "assembled"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TimerLabel" type="Label" parent="Player/UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -93.0
+offset_bottom = 42.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "300"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="KeybindPanel" type="Panel" parent="Player/UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -268.5
+offset_top = -229.0
+offset_right = 268.5
+offset_bottom = 229.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Keybinds" type="Label" parent="Player/UI/KeybindPanel"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 22.0
+offset_right = 516.5
+offset_bottom = 368.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "KEYBINDS
+
+W / A / S / D                            Move
+E                                    Pick up / interact
+F                            Play/pause/copy cassette
+R                                        Erase cassette
+Q                                   Drop held cassette
+Left / Right             Move cassette pointer
+Escape                           Close this panel"
+autowrap_mode = 2
+
+[node name="QuitButton" type="Button" parent="Player/UI/KeybindPanel"]
+layout_mode = 0
+offset_left = 58.5
+offset_top = 382.0
+offset_right = 238.5
+offset_bottom = 432.0
+text = "Quit"
+
+[node name="ResetWorldButton" type="Button" parent="Player/UI/KeybindPanel"]
+layout_mode = 0
+offset_left = 295.5
+offset_top = 382.0
+offset_right = 475.5
+offset_bottom = 432.0
+text = "Reset"
+
+[node name="AnnouncementRoom" type="Area3D" parent="." groups=["AnnouncementSystem"]]
+script = ExtResource("8_announcement")
+
+[node name="TableCollision" type="CollisionShape3D" parent="AnnouncementRoom"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2222395, 1.6540226, 6.760551)
+shape = SubResource("BoxShape3D_announcement_system")
+
+[node name="Camera Position" type="Marker3D" parent="AnnouncementRoom"]
+transform = Transform3D(1, 0, 0, 0, 0.8290376, 0.5591929, 0, -0.5591929, 0.8290376, 10.28752, 1.9721668, 7.1671305)
+
+[node name="Cassette Player" parent="AnnouncementRoom" instance=ExtResource("6_2xqv2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.010226, 1.6090692, 6.760154)
+
+[node name="CassetteRecorder" parent="AnnouncementRoom" instance=ExtResource("7_24nm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.512579, 1.5870152, 6.748722)
+
+[node name="keywords" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 7.6405926)
+item_name = "key words"
+phrase = "Passengers, Please pay Attention. / Train number: / platform / Sorry for any inconvenience caused."
+
+[node name="digits" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 7.8524384)
+item_name = "digits"
+phrase = "0 / 1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9"
+
+[node name="train names" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 8.072266)
+item_name = "train names"
+phrase = "Vande Bharat / Shatabdi / Kaalnagar / Rajasthan / Rajdhani / express"
+
+[node name="train status" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 8.294447)
+item_name = "status"
+phrase = "will be arriving on / has been delayed. / has been canceled."
+
+[node name="Blank" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.2494118, 8.510199)
+item_name = "Blank"
+
+[node name="Blank1" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 7.6405926)
+item_name = "Blank1"
+
+[node name="Blank2" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 7.8524384)
+item_name = "Blank2"
+
+[node name="Blank3" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 8.072266)
+item_name = "Blank3"
+
+[node name="Blank4" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 8.294447)
+item_name = "Blank4"
+
+[node name="Blank5" parent="AnnouncementRoom" instance=ExtResource("4_8m85o")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.861871, 2.013035, 8.510199)
+item_name = "Blank5"
+
+[node name="DepartureBoard" parent="AnnouncementRoom" instance=ExtResource("8_b7wx0")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.590814, 2.1878586, 9.483356)
+
+[node name="AnnouncementManager" type="Node3D" parent="AnnouncementRoom" node_paths=PackedStringArray("game_manager")]
+script = ExtResource("10_siqrc")
+game_manager = NodePath("../../GameManager")
+
+[node name="CassetteRack" type="StaticBody3D" parent="." groups=["CassetteRack"]]
+collision_mask = 0
+script = ExtResource("18_rack")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CassetteRack"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.902684, 2.113304, 8.092801)
+shape = SubResource("BoxShape3D_6l62i")
+
+[node name="Camera Position" type="Marker3D" parent="CassetteRack"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 11.104342, 2.0411658, 8.108763)
+
+[node name="GameManager" type="Node3D" parent="." node_paths=PackedStringArray("announcement_manager", "departure_board", "timerLabel", "confusion_bar")]
+script = ExtResource("9_exmwa")
+announcement_manager = NodePath("../AnnouncementRoom/AnnouncementManager")
+departure_board = NodePath("../AnnouncementRoom/DepartureBoard")
+timerLabel = NodePath("../Player/UI/TimerLabel")
+confusion_bar = NodePath("../Player/UI/ConfusionBar")
+
+[node name="TaskTimer" type="Timer" parent="GameManager"]
+
+[node name="TicketSystem" type="Node3D" parent="."]
+
+[node name="NpcManager" type="Node3D" parent="TicketSystem" node_paths=PackedStringArray("game_manager")]
+script = ExtResource("15_npc_manager")
+game_manager = NodePath("../../GameManager")
+
+[node name="board" parent="TicketSystem" instance=ExtResource("14_board")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9.80754, 1.8700751, 5.50674)
+
+[node name="FareStamp" parent="TicketSystem" instance=ExtResource("16_stamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.793103, 1.7414789, 5.0193453)
+
+[node name="calculator" parent="TicketSystem" instance=ExtResource("15_phawi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.813882, 1.6233222, 4.2088633)
+
+[connection signal="pressed" from="Player/UI/KeybindPanel/QuitButton" to="GameManager" method="quit_game"]
+[connection signal="pressed" from="Player/UI/KeybindPanel/ResetWorldButton" to="GameManager" method="reset_world"]
+[connection signal="timeout" from="GameManager/TaskTimer" to="GameManager" method="_on_task_timer_timeout"]

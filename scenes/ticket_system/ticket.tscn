@@ -1,0 +1,150 @@
+[gd_scene load_steps=7 format=3 uid="uid://wowrrygpdm8a"]
+
+[ext_resource type="Script" uid="uid://d8ony06kvymk" path="res://scenes/ticket_system/ticket.gd" id="1_ticket"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aiqyg"]
+size = Vector3(0.096, 0.168, 0.002)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y5k4v"]
+size = Vector3(0.096, 0.168, 0.002)
+
+[sub_resource type="QuadMesh" id="QuadMesh_display"]
+size = Vector2(0.096, 0.168)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_display"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_display"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_display")
+
+[node name="ticket" type="StaticBody3D" groups=["Pickupable"]]
+collision_layer = 2
+script = ExtResource("1_ticket")
+from_station = "Kaalnagar"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_aiqyg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_y5k4v")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(560, 400)
+
+[node name="TicketUI" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TicketBackground" type="ColorRect" parent="SubViewport/TicketUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.470588, 0.717647, 0.909804, 1)
+
+[node name="Content" type="VBoxContainer" parent="SubViewport/TicketUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.08
+anchor_top = 0.1
+anchor_right = 0.92
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="SubViewport/TicketUI/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_font_sizes/font_size = 32
+text = "TRAIN TICKET"
+horizontal_alignment = 1
+
+[node name="FromLabel" type="Label" parent="SubViewport/TicketUI/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "FROM: Trian Station"
+horizontal_alignment = 1
+
+[node name="ToLabel" type="Label" parent="SubViewport/TicketUI/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "TO: Delhi"
+horizontal_alignment = 1
+
+[node name="FareLabel" type="Label" parent="SubViewport/TicketUI/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "FARE:"
+horizontal_alignment = 1
+
+[node name="CoachLabel" type="Label" parent="SubViewport/TicketUI/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_font_sizes/font_size = 24
+text = "COACH: Sleeper"
+horizontal_alignment = 1
+
+[node name="DisplayMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0011)
+mesh = SubResource("QuadMesh_display")
+surface_material_override/0 = SubResource("StandardMaterial3D_display")
+
+[node name="DestinationLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0.002)
+pixel_size = 0.0012
+billboard = 1
+text = "Destination"
+outline_size = 5
+
+[node name="InspectionLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="InspectOverlay" type="Control" parent="InspectionLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dimmer" type="ColorRect" parent="InspectionLayer/InspectOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="TicketCloseup" type="TextureRect" parent="InspectionLayer/InspectOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -200.0
+offset_right = 280.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_display")
+expand_mode = 1
+stretch_mode = 5

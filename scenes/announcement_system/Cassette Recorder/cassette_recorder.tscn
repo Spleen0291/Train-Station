@@ -1,0 +1,190 @@
+[gd_scene load_steps=31 format=3 uid="uid://fsuwltil5gas"]
+
+[ext_resource type="Script" uid="uid://ck7upcwm0ppyd" path="res://scenes/announcement_system/Cassette Recorder/cassette_recorder.gd" id="1_772dj"]
+[ext_resource type="Script" uid="uid://bud2v7mo128j4" path="res://scenes/announcement_system/Cassette Player/cassette_flap.gd" id="2_6518o"]
+[ext_resource type="Script" uid="uid://dcbowlixay2rh" path="res://scenes/announcement_system/Cassette Player/cassette_holder.gd" id="3_hlqxg"]
+[ext_resource type="Script" uid="uid://plulvck43tla" path="res://scenes/announcement_system/Cassette Recorder/eject.gd" id="4_6jtd2"]
+[ext_resource type="Script" uid="uid://delwkguyckife" path="res://scenes/announcement_system/Cassette Recorder/rewind.gd" id="5_2sry4"]
+[ext_resource type="Script" uid="uid://cwxoeecqc5pr5" path="res://scenes/announcement_system/Cassette Recorder/record.gd" id="6_msupy"]
+[ext_resource type="Script" uid="uid://d30oxphq2wfpv" path="res://scenes/announcement_system/Cassette Recorder/forward.gd" id="7_bxxji"]
+[ext_resource type="Script" uid="uid://bglxtx0ypdfb8" path="res://scenes/announcement_system/Cassette Recorder/stop.gd" id="8_man7j"]
+[ext_resource type="Script" uid="uid://de04xvao8s5xi" path="res://scenes/announcement_system/Cassette Recorder/erase.gd" id="9_erase"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0kict"]
+albedo_color = Color(0.30237308, 0.30077797, 0.6408571, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rx4ql"]
+material = SubResource("StandardMaterial3D_0kict")
+size = Vector3(0.356, 0.072, 0.252)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlqxg"]
+size = Vector3(0.11, 0.075, 0.005)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lyjw1"]
+albedo_color = Color(0.22670749, 0.22670749, 0.22670746, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sqs7m"]
+material = SubResource("StandardMaterial3D_lyjw1")
+size = Vector3(0.11, 0.075, 0.005)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sqs7m"]
+size = Vector3(0.11, 0.075, 0.005)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u2yut"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e8qkd"]
+material = SubResource("StandardMaterial3D_u2yut")
+size = Vector3(0.1, 0.065, 0.02)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hivev"]
+size = Vector3(0.015, 0.01, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bjh7k"]
+albedo_color = Color(0.972549, 0.5882353, 0.21960784, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pjy07"]
+material = SubResource("StandardMaterial3D_bjh7k")
+size = Vector3(0.015, 0.01, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rjcby"]
+albedo_color = Color(0.20152658, 0.20152658, 0.20152658, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_747is"]
+material = SubResource("StandardMaterial3D_rjcby")
+size = Vector3(0.015, 0.01, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mrnbr"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ii21v"]
+material = SubResource("StandardMaterial3D_mrnbr")
+size = Vector3(0.015, 0.01, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_51ty4"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u86rn"]
+material = SubResource("StandardMaterial3D_51ty4")
+size = Vector3(0.015, 0.01, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2sry4"]
+albedo_color = Color(0.73333335, 0.078431375, 0.8, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_msupy"]
+material = SubResource("StandardMaterial3D_2sry4")
+size = Vector3(0.015, 0.01, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s6sdy"]
+albedo_color = Color(0.6784314, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_b4jm5"]
+material = SubResource("StandardMaterial3D_s6sdy")
+size = Vector3(0.015, 0.01, 0.03)
+
+[node name="CassetteRecorder" type="Node3D" groups=["CassetteCopier"]]
+script = ExtResource("1_772dj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_rx4ql")
+
+[node name="ContentLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+pixel_size = 0.0004
+billboard = 1
+outline_size = 5
+autowrap_mode = 2
+width = 1000.0
+
+[node name="Flap" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.069119625, 0.045038074, -0.0038726442)
+collision_layer = 4
+script = ExtResource("2_6518o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Flap"]
+shape = SubResource("BoxShape3D_hlqxg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Flap"]
+mesh = SubResource("BoxMesh_sqs7m")
+
+[node name="Holder" type="StaticBody3D" parent="." groups=["CassetteHolder"]]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.069119625, 0.031302832, -0.0038726442)
+collision_layer = 4
+script = ExtResource("3_hlqxg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Holder"]
+shape = SubResource("BoxShape3D_sqs7m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Holder"]
+mesh = SubResource("BoxMesh_e8qkd")
+
+[node name="Eject" type="StaticBody3D" parent="." groups=["CassetteEject"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13101026, 0.043211415, 0.08509297)
+collision_layer = 4
+script = ExtResource("4_6jtd2")
+
+[node name="HolderPosition" type="Node3D" parent="Eject"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.06218359, 0.0006657168, -0.0933486)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Eject"]
+shape = SubResource("BoxShape3D_hivev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Eject"]
+mesh = SubResource("BoxMesh_pjy07")
+
+[node name="FlapEjectedPosition" type="Marker3D" parent="Eject"]
+transform = Transform3D(1, 0, 0, 0, 0.95848215, -0.28515312, 0, 0.28515312, 0.95848215, 0.059935242, 0.026710175, -0.11367954)
+
+[node name="Rewind" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10620893, 0.043211415, 0.08509297)
+collision_layer = 4
+script = ExtResource("5_2sry4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rewind"]
+shape = SubResource("BoxShape3D_hivev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rewind"]
+mesh = SubResource("BoxMesh_747is")
+
+[node name="Record" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08016716, 0.043211415, 0.08509297)
+collision_layer = 4
+script = ExtResource("6_msupy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Record"]
+shape = SubResource("BoxShape3D_hivev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Record"]
+mesh = SubResource("BoxMesh_ii21v")
+
+[node name="Forward" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.054602653, 0.043211415, 0.08509297)
+collision_layer = 4
+script = ExtResource("7_bxxji")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Forward"]
+shape = SubResource("BoxShape3D_hivev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Forward"]
+mesh = SubResource("BoxMesh_u86rn")
+
+[node name="Erase" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02945647, 0.043211415, 0.08509297)
+collision_layer = 4
+script = ExtResource("9_erase")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Erase"]
+shape = SubResource("BoxShape3D_hivev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Erase"]
+mesh = SubResource("BoxMesh_msupy")
+
+[node name="Stop" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033560116, 0.043211415, 0.08509297)
+collision_layer = 4
+script = ExtResource("8_man7j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stop"]
+shape = SubResource("BoxShape3D_hivev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Stop"]
+mesh = SubResource("BoxMesh_b4jm5")

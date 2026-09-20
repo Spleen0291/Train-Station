@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bsph3x02w5na4"]
+
+[ext_resource type="PackedScene" uid="uid://cxx3l0ernprhq" path="res://scenes/announcement_system/Cassette Player/cassette_player.tscn" id="1_c8heo"]
+[ext_resource type="PackedScene" uid="uid://fsuwltil5gas" path="res://scenes/announcement_system/Cassette Recorder/cassette_recorder.tscn" id="2_u1xdm"]
+[ext_resource type="Script" path="res://scenes/announcement_system/announcement_system.gd" id="3_announcement"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s2a3y"]
+size = Vector3(0.8729248, 0.21002197, 0.26104736)
+
+[node name="AnnouncementSystem" type="Area3D"]
+script = ExtResource("3_announcement")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.023986816, 0.044952393, 0.00039672852)
+shape = SubResource("BoxShape3D_s2a3y")
+
+[node name="Cassette Player" parent="." instance=ExtResource("1_c8heo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23608366, 0, 0)
+
+[node name="CassetteRecorder" parent="." instance=ExtResource("2_u1xdm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2330192, -0.023003846, 0)
+
+[node name="Camera Position" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8950823, 0.44590104, 0, -0.44590104, 0.8950823, 0, 0.26163885, 0.36870363)

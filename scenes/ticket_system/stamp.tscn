@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyv1tsgegwxdr"]
+
+[ext_resource type="Script" uid="uid://ccu2uoydn4obk" path="res://scenes/ticket_system/stamp.gd" id="1_stamp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p6k28"]
+size = Vector3(0.14, 0.25, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u1hm3"]
+albedo_color = Color(0.61229926, 1.504086e-06, 5.7756904e-07, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u1hm3"]
+material = SubResource("StandardMaterial3D_u1hm3")
+size = Vector3(0.14, 0.25, 0.08)
+
+[node name="stamp" type="StaticBody3D" groups=["Stamp"]]
+collision_layer = 2
+script = ExtResource("1_stamp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_p6k28")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_u1hm3")

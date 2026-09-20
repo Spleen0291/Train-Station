@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqsce00fvakux"]
+
+[ext_resource type="Script" uid="uid://c0ivlww5l20co" path="res://scenes/announcement_system/departure_board.gd" id="2_pxjqs"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_7xcgu"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_lu33w"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rnfas"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_lu33w")
+
+[node name="DepartureBoard" type="Node3D"]
+script = ExtResource("2_pxjqs")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(800, 450)
+
+[node name="BoardUI" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/BoardUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TrainIDLabel" type="Label" parent="SubViewport/BoardUI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="TrainNameLabel" type="Label" parent="SubViewport/BoardUI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="PlatformLabel" type="Label" parent="SubViewport/BoardUI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="StatusLabel" type="Label" parent="SubViewport/BoardUI/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_7xcgu")
+surface_material_override/0 = SubResource("StandardMaterial3D_rnfas")
