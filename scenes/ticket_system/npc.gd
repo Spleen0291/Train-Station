@@ -49,6 +49,12 @@ func _get_fare_discount() -> float:
 		_:
 			return 0.0
 
+func print_ticket_comparison(ticket: Ticket) -> void:
+	var base_fare: int = ScheduleDatabase.get_fare_to_destination(destination)
+	var expected_fare := roundi(float(base_fare) * (1.0 - _get_fare_discount()))
+	print("Ticket given: destination=%s, coach=%s, fare=%s" % [ticket.to_station, ticket.coach_type, str(ticket.fare_price)])
+	print("Correct ticket: destination=%s, coach=%s, fare=%s" % [destination, coach_type, str(expected_fare)])
+
 func accept_ticket(ticket: Ticket) -> bool:
 	if not ticket:
 		return false

@@ -32,7 +32,10 @@ var button_seek_direction := 0
 
 func set_content_display(text: String) -> void:
 	content_label.text = text
-	content_label.visible = text != ""
+	_update_content_visibility()
+
+func _update_content_visibility() -> void:
+	content_label.visible = content_label.text != "" and cassette_seated
 
 func _ready() -> void:
 	if holder:
@@ -91,6 +94,7 @@ func _move_to_ejected_position() -> void:
 			holder.collision_layer = 0 if held_cassette else INTERACTION_LAYER
 	cassette_seated = false
 	cassette_ejected = true
+	_update_content_visibility()
 
 func insert_from_actor(actor: Node) -> bool:
 	if not actor.held_item:
@@ -133,6 +137,7 @@ func take(hold_position: Node3D, keep_holder_ejected := false) -> Node3D:
 		flap.collision_layer = INTERACTION_LAYER
 	cassette_seated = false
 	cassette_ejected = keep_holder_ejected
+	_update_content_visibility()
 	_emit_slots_updated()
 	return c
 
@@ -151,6 +156,7 @@ func seat_cassette() -> bool:
 		flap.collision_layer = 0
 	cassette_seated = true
 	cassette_ejected = false
+	_update_content_visibility()
 	return true
 
 func close_flap() -> bool:
@@ -167,6 +173,7 @@ func close_flap() -> bool:
 	if flap:
 		flap.collision_layer = 0
 	cassette_ejected = false
+	_update_content_visibility()
 	return true
 
 func start_copying_from_player(player: CassettePlayer, source_start_index := -1) -> bool:

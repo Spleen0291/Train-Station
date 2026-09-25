@@ -1,6 +1,24 @@
 extends Camera3D
 
-const CALCULATOR_UI_SCENE := preload("res://scenes/ui/calculator_ui.tscn")
+const HIGHLIGHT_SHADER_CODE := """
+shader_type spatial;
+render_mode unshaded, cull_front;
+
+uniform vec4 outline_color : source_color = vec4(0.0, 1.0, 0.8, 1.0);
+uniform float outline_width = 2.0; // in pixels
+
+void vertex() {
+	vec4 clip_pos = PROJECTION_MATRIX * (MODELVIEW_MATRIX * vec4(VERTEX, 1.0));
+	vec3 clip_normal = mat3(PROJECTION_MATRIX) * (mat3(MODELVIEW_MATRIX) * NORMAL);
+	vec2 offset = normalize(clip_normal.xy) / VIEWPORT_SIZE * clip_pos.w * outline_width * 2.0;
+	clip_pos.xy += offset;
+	POSITION = clip_pos;
+}
+
+void fragment() {
+	ALBEDO = outline_color.rgb;
+}
+"""
 
 @export var CAMERA_SENS = 0.003
 @export var PICKUP_RANGE = 3.0
@@ -19,10 +37,6 @@ const CALCULATOR_UI_SCENE := preload("res://scenes/ui/calculator_ui.tscn")
 
 @onready var player_mesh: MeshInstance3D = get_parent().get_node("MeshInstance3D")
 var pointer_timer: Timer
-var fare_dialog: Window
-var fare_input: LineEdit
-var coach_buttons: Dictionary = {}
-var calculator_panel: Control
 var pointer_index: int = 0
 var pointer_text: String = ""
 var assembled_phrase_for_check: String = ""
@@ -31,6 +45,8 @@ var current_cassette_text: String = ""
 var current_cassette_appended_count: int = 0
 
 var current_target: Node3D = null
+var current_target_shape := -1
+var current_target_position := Vector3.ZERO
 var held_item: Node3D = null
 var current_announcement := ""
 var is_playing: bool = false
@@ -46,11 +62,18 @@ var normal_camera_transform: Transform3D
 var inspection_return_transform: Transform3D
 var inspection_view := ""
 var camera_is_fixed := false
+var highlighted_target: Node3D = null
+var highlighted_overlays: Dictionary = {}
+var highlight_material: ShaderMaterial
+
 func _ready() -> void:
 	normal_camera_transform = transform
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	get_tree().set_meta("player_input_locked", false)
-	_create_fare_dialog()
+	var highlight_shader := Shader.new()
+	highlight_shader.code = HIGHLIGHT_SHADER_CODE
+	highlight_material = ShaderMaterial.new()
+	highlight_material.shader = highlight_shader
 	var game_manager = _get_game_manager()
 	if game_manager:
 		last_train_key = _get_train_key(game_manager)
@@ -137,6 +160,21 @@ func _is_cassette_rack_target(target: Node3D) -> bool:
 func set_camera_transform(camera_transform: Transform3D) -> void:
 	set_inspection_camera(camera_transform)
 
+func is_camera_fixed() -> bool:
+	return camera_is_fixed
+
+func move_fixed_camera_to_position(target_position: Vector3) -> void:
+	if not camera_is_fixed:
+		return
+	var ticket_system := get_tree().get_first_node_in_group("TicketSystem") as TicketSystem
+	if ticket_system == null:
+		return
+	var rack_camera_transform := ticket_system.camera_position.global_transform
+	global_transform = rack_camera_transform
+	global_position = Vector3(target_position.x, target_position.y + 0.3, rack_camera_transform.origin.z + 0.2)
+	global_rotation.x += deg_to_rad(-10.0)
+	inspection_view = "ticket_stack"
+
 func set_inspection_camera(camera_transform: Transform3D, view_name := "") -> void:
 	if not camera_is_fixed:
 		inspection_return_transform = global_transform
@@ -159,6 +197,9 @@ func restore_camera_transform() -> void:
 	var cassette_rack := get_tree().get_first_node_in_group("CassetteRack")
 	if cassette_rack and cassette_rack.has_method("deactivate"):
 		cassette_rack.deactivate()
+	var ticket_system := get_tree().get_first_node_in_group("TicketSystem")
+	if ticket_system and ticket_system.has_method("deactivate"):
+		ticket_system.deactivate()
 	player_mesh.visible = true
 	get_tree().set_meta("player_input_locked", false)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -171,9 +212,18 @@ func _switch_inspection_view(view_name: String) -> void:
 		target = get_tree().get_first_node_in_group("AnnouncementSystem")
 	elif view_name == "rack":
 		target = get_tree().get_first_node_in_group("CassetteRack")
+	elif view_name == "ticket_system" or view_name == "ticket_table" or view_name == "ticket_npc":
+		target = get_tree().get_first_node_in_group("TicketSystem")
 	if target == null:
 		return
-	var marker := target.get_node_or_null("Camera Position") as Marker3D
+	var marker_name := "Camera Position"
+	if view_name == "ticket_system":
+		marker_name = "Cabinet Camera Position"
+	elif view_name == "ticket_table":
+		marker_name = "Table Camera Position"
+	elif view_name == "ticket_npc":
+		marker_name = "NPC Camera Position"
+	var marker := target.get_node_or_null(marker_name) as Marker3D
 	if marker == null:
 		return
 	global_transform = marker.global_transform
@@ -273,13 +323,43 @@ func _check_for_pickup() -> void:
 	var query = PhysicsRayQueryParameters3D.create(from, to)
 	query.collision_mask = 1 | 2 | 4
 	query.collide_with_areas = true
+	var excluded_rids: Array[RID] = []
 	var cassette_rack: Node3D = null
+	var ticket_system := get_tree().get_first_node_in_group("TicketSystem")
 	if camera_is_fixed:
 		cassette_rack = get_tree().get_first_node_in_group("CassetteRack")
 		if cassette_rack:
-			query.exclude = [cassette_rack.get_rid()]
+			excluded_rids.append(cassette_rack.get_rid())
+		if not held_item and ticket_system:
+			excluded_rids.append(ticket_system.get_rid())
+	query.exclude = excluded_rids
 
 	var result = space_state.intersect_ray(query)
+	if camera_is_fixed and held_item is Ticket:
+		var npc_query := PhysicsRayQueryParameters3D.create(from, to)
+		npc_query.collision_mask = 1
+		npc_query.collide_with_areas = false
+		if ticket_system:
+			npc_query.exclude = [ticket_system.get_rid()]
+		var npc_result = space_state.intersect_ray(npc_query)
+		if npc_result and npc_result.collider.has_method("accept_ticket"):
+			result = npc_result
+		if ticket_system and (not result or result.collider == ticket_system):
+			var calculator_query := PhysicsRayQueryParameters3D.create(from, to)
+			calculator_query.collision_mask = 1
+			calculator_query.collide_with_areas = false
+			calculator_query.exclude = [ticket_system.get_rid()]
+			var calculator_result = space_state.intersect_ray(calculator_query)
+			if calculator_result and calculator_result.collider.is_in_group("Calculator"):
+				result = calculator_result
+	if camera_is_fixed and held_item is Ticket and ticket_system and result and result.collider == ticket_system:
+		var stamp_query := PhysicsRayQueryParameters3D.create(from, to)
+		stamp_query.collision_mask = 2
+		stamp_query.collide_with_areas = false
+		stamp_query.exclude = [ticket_system.get_rid()]
+		var stamp_result = space_state.intersect_ray(stamp_query)
+		if stamp_result and stamp_result.collider.is_in_group("Stamp"):
+			result = stamp_result
 	if camera_is_fixed and held_item and cassette_rack:
 		var rack_query := PhysicsRayQueryParameters3D.create(from, to)
 		rack_query.collision_mask = 1
@@ -288,14 +368,18 @@ func _check_for_pickup() -> void:
 			if not result or not result.collider.is_in_group("Pickupable"):
 				result = rack_result
 	current_target = null
+	current_target_shape = -1
+	current_target_position = Vector3.ZERO
 	prompt_label.visible = false
 
 	if not result:
 		# no input locking here; player movement should remain enabled
-		pass
+		_update_target_highlight(null)
 		return
 
 	var collider = result.collider
+	current_target_shape = result.shape if collider is TicketSystem else -1
+	current_target_position = result.position
 	if not camera_is_fixed:
 		var player_query := PhysicsRayQueryParameters3D.create(from, to)
 		player_query.collision_mask = 1
@@ -315,15 +399,20 @@ func _check_for_pickup() -> void:
 	if collider.is_in_group("Stamp"):
 		current_target = collider
 		prompt_label.visible = true
-		if held_item is Ticket:
-			prompt_label.text = "Press Space to stamp ticket"
+		if collider.has_method("get_interaction_prompt"):
+			prompt_label.text = collider.get_interaction_prompt(self)
+		elif held_item is Ticket:
+			prompt_label.text = "Left click to print fare"
 		else:
-			prompt_label.text = "Press E to set fare"
+			prompt_label.text = "Hold a ticket and left click to print fare"
 
 	elif collider.is_in_group("Calculator"):
-		current_target = collider
-		prompt_label.visible = true
-		prompt_label.text = "Press E to use calculator"
+		if collider.has_method("get_interaction_prompt"):
+			var calculator_prompt: String = collider.get_interaction_prompt(self)
+			if calculator_prompt != "":
+				current_target = collider
+				prompt_label.visible = true
+				prompt_label.text = calculator_prompt
 
 	elif camera_is_fixed and collider.is_in_group("Pickupable"):
 		current_target = collider
@@ -338,12 +427,19 @@ func _check_for_pickup() -> void:
 	elif collider.has_method("accept_ticket") and held_item is Ticket:
 		current_target = collider
 		prompt_label.visible = true
-		prompt_label.text = "Press E to give ticket"
+		prompt_label.text = "Left click to give ticket"
 
 	elif collider.is_in_group("RouteMap"):
 		current_target = collider
 		prompt_label.visible = true
 		prompt_label.text = "Hold right click to inspect map"
+
+	elif collider is TicketSystem:
+		var ticket_system_prompt: String = collider.get_interaction_prompt(self, current_target_shape, current_target_position)
+		if ticket_system_prompt != "":
+			current_target = collider
+			prompt_label.visible = true
+			prompt_label.text = ticket_system_prompt
 
 	elif collider.has_method("get_interaction_prompt"):
 		var interaction_prompt : String = collider.get_interaction_prompt(self)
@@ -358,6 +454,37 @@ func _check_for_pickup() -> void:
 			current_target = collider
 			prompt_label.visible = true
 			prompt_label.text = text
+
+	_update_target_highlight(current_target)
+
+func _update_target_highlight(target: Node3D) -> void:
+	if highlighted_target == target:
+		return
+	_clear_target_highlight()
+	if target == null or highlight_material == null:
+		return
+
+	var geometry_nodes: Array[GeometryInstance3D] = []
+	_collect_geometry_nodes(target, geometry_nodes)
+	for geometry in geometry_nodes:
+		highlighted_overlays[geometry] = geometry.material_overlay
+		geometry.material_overlay = highlight_material
+	highlighted_target = target
+
+func _clear_target_highlight() -> void:
+	for geometry in highlighted_overlays:
+		if is_instance_valid(geometry):
+			geometry.material_overlay = highlighted_overlays[geometry]
+	highlighted_overlays.clear()
+	highlighted_target = null
+
+func _collect_geometry_nodes(node: Node, result: Array[GeometryInstance3D]) -> void:
+	if node is Label3D:
+		return
+	if node is GeometryInstance3D:
+		result.append(node)
+	for child in node.get_children():
+		_collect_geometry_nodes(child, result)
 
 func _input(event) -> void:
 	if event.is_action_pressed("escape"):
@@ -378,6 +505,18 @@ func _input(event) -> void:
 		return
 
 	if camera_is_fixed:
+		if event.is_action_pressed("move_forward") and inspection_view == "ticket_table":
+			_switch_inspection_view("ticket_npc")
+			return
+		if event.is_action_pressed("move_back") and inspection_view == "ticket_npc":
+			_switch_inspection_view("ticket_table")
+			return
+		if event.is_action_pressed("move_right") and inspection_view == "ticket_system":
+			_switch_inspection_view("ticket_table")
+			return
+		if event.is_action_pressed("move_left") and inspection_view == "ticket_table":
+			_switch_inspection_view("ticket_system")
+			return
 		if event.is_action_pressed("move_right") and inspection_view == "announcement":
 			_switch_inspection_view("rack")
 			return
@@ -385,27 +524,8 @@ func _input(event) -> void:
 			_switch_inspection_view("announcement")
 			return
 
-	if fare_dialog and fare_dialog.visible:
-		if event.is_action_pressed("run") and current_target and current_target.is_in_group("Stamp"):
-			_close_fare_dialog()
-			_stamp_ticket(current_target)
-		return
-
-	if calculator_panel and calculator_panel.visible:
-		if event.is_action_pressed("interact"):
-			_close_calculator_panel()
-		return
-
-	if event.is_action_pressed("interact") and current_target and current_target.is_in_group("Stamp"):
-		_open_fare_dialog(current_target)
-		return
-
 	if event.is_action_pressed("run") and current_target and current_target.is_in_group("Stamp"):
 		_stamp_ticket(current_target)
-		return
-
-	if event.is_action_pressed("interact") and current_target and current_target.is_in_group("Calculator"):
-		_open_calculator_panel()
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and held_item is Ticket:
@@ -430,8 +550,14 @@ func _input(event) -> void:
 			current_target = null
 			prompt_label.visible = false
 			return
+		if current_target.has_method("accept_ticket") and held_item is Ticket:
+			_give_ticket_to_npc(current_target)
+			return
 		if current_target.has_method("activate"):
-			current_target.activate(self)
+			if current_target is TicketSystem:
+				current_target.activate(self, current_target_shape, current_target_position)
+			else:
+				current_target.activate(self)
 			current_target = null
 			prompt_label.visible = false
 			return
@@ -503,16 +629,7 @@ func _input(event) -> void:
 
 	if event.is_action_pressed("interact") and current_target:
 		if current_target.has_method("accept_ticket") and held_item is Ticket:
-			var game_manager := _get_game_manager()
-			var submitted_ticket: Ticket = held_item
-			var ticket_accepted: bool = current_target.accept_ticket(submitted_ticket)
-			if ticket_accepted:
-				if game_manager:
-					game_manager.change_confusion_percent(-5.0)
-			elif game_manager:
-				game_manager.change_confusion_percent(15.0)
-			submitted_ticket.consume()
-			held_item = null
+			_give_ticket_to_npc(current_target)
 
 		elif current_target.is_in_group("CopierSlot"):
 			held_item = current_target.interact(held_item, hold_position)
@@ -534,97 +651,25 @@ func _input(event) -> void:
 		rotation.x -= event.relative.y * CAMERA_SENS
 		rotation.x = clamp(rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
-
-func _create_fare_dialog() -> void:
-	fare_dialog = Window.new()
-	fare_dialog.visible = false
-	fare_dialog.title = "Set Ticket Fare"
-	fare_dialog.size = Vector2i(480, 220)
-	fare_dialog.unresizable = true
-	var content := VBoxContainer.new()
-	content.custom_minimum_size = Vector2(440, 170)
-	var coach_row := HBoxContainer.new()
-	coach_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	for coach in ["General", "Sleeper", "AC Chair Car", "First Class"]:
-		var coach_button := Button.new()
-		coach_button.text = coach
-		coach_button.toggle_mode = true
-		coach_button.custom_minimum_size = Vector2(100, 40)
-		coach_button.pressed.connect(_select_coach.bind(coach))
-		coach_buttons[coach] = coach_button
-		coach_row.add_child(coach_button)
-	content.add_child(coach_row)
-	fare_input = LineEdit.new()
-	fare_input.custom_minimum_size = Vector2(280, 40)
-	fare_input.placeholder_text = "Enter fare"
-	fare_input.alignment = HORIZONTAL_ALIGNMENT_CENTER
-	fare_input.tooltip_text = "Enter a non-negative whole number"
-	content.add_child(fare_input)
-	var set_fare_button := Button.new()
-	set_fare_button.text = "Set Fare"
-	set_fare_button.custom_minimum_size = Vector2(280, 40)
-	set_fare_button.pressed.connect(_set_fare_from_dialog)
-	content.add_child(set_fare_button)
-	fare_dialog.add_child(content)
-	fare_dialog.close_requested.connect(_close_fare_dialog)
-	get_tree().current_scene.add_child.call_deferred(fare_dialog)
-	_create_calculator_panel()
-
-func _create_calculator_panel() -> void:
-	calculator_panel = CALCULATOR_UI_SCENE.instantiate() as Control
-	calculator_panel.visible = false
-	if keybind_panel:
-		keybind_panel.get_parent().add_child.call_deferred(calculator_panel)
-
-func _open_calculator_panel() -> void:
-	if calculator_panel == null or calculator_panel.visible:
-		return
-	calculator_panel.visible = true
-	get_tree().set_meta("player_input_locked", true)
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
-func _close_calculator_panel() -> void:
-	calculator_panel.visible = false
-	get_tree().set_meta("player_input_locked", false)
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+func _give_ticket_to_npc(npc: Node) -> void:
+	var game_manager := _get_game_manager()
+	var submitted_ticket: Ticket = held_item
+	if npc.has_method("print_ticket_comparison"):
+		npc.print_ticket_comparison(submitted_ticket)
+	var ticket_accepted: bool = npc.accept_ticket(submitted_ticket)
+	if ticket_accepted:
+		if game_manager:
+			game_manager.change_confusion_percent(-5.0)
+	elif game_manager:
+		game_manager.change_confusion_percent(15.0)
+	submitted_ticket.consume()
+	held_item = null
+	current_target = null
+	prompt_label.visible = false
 
 func _stamp_ticket(stamp: Node3D) -> void:
 	if held_item is Ticket and stamp.stamp_ticket(held_item):
 		prompt_label.text = "Ticket stamped"
-
-func _open_fare_dialog(stamp: Node3D) -> void:
-	if fare_dialog == null or fare_dialog.visible:
-		return
-	fare_dialog.set_meta("stamp", stamp)
-	var fare_price := int(stamp.get("fare_price"))
-	fare_input.text = "" if fare_price < 0 else str(fare_price)
-	var selected_coach: String = str(stamp.get("coach_type"))
-	for coach in coach_buttons:
-		coach_buttons[coach].set_pressed_no_signal(coach == selected_coach)
-	fare_dialog.popup_centered()
-	get_tree().set_meta("player_input_locked", true)
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	fare_input.grab_focus()
-	fare_input.select_all()
-
-func _select_coach(coach: String) -> void:
-	var stamp := fare_dialog.get_meta("stamp") as Node3D
-	if stamp and stamp.has_method("set_coach"):
-		stamp.set_coach(coach)
-	for available_coach in coach_buttons:
-		coach_buttons[available_coach].set_pressed_no_signal(available_coach == coach)
-
-func _set_fare_from_dialog() -> void:
-	var stamp := fare_dialog.get_meta("stamp") as Node3D
-	if stamp and stamp.has_method("set_fare") and fare_input.text.is_valid_int() and int(fare_input.text) >= 0:
-		stamp.set_fare(int(fare_input.text))
-		prompt_label.text = "Fare set to Rs. " + str(int(stamp.get("fare_price")))
-		_close_fare_dialog()
-
-func _close_fare_dialog() -> void:
-	fare_dialog.hide()
-	get_tree().set_meta("player_input_locked", false)
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _add_to_announcement(phrase: String) -> void:
 	if current_announcement == "":

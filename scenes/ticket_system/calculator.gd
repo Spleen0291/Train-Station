@@ -1,34 +1,47 @@
-extends Panel
+extends Node3D
+class_name TicketCalculator
 
 var expression := ""
 var stored_value := "0"
 
-@onready var display: LineEdit = $Content/Display
+@onready var display: Label = $SubViewport/Control/"Calculator Text"
 
 func _ready() -> void:
 	display.text = stored_value
-	for button in $Content/CalculatorGrid.get_children():
-		button.pressed.connect(_on_calculator_button_pressed.bind(button.text))
-	for discount in $Content/DiscountRow.get_children():
-		discount.pressed.connect(_on_discount_pressed.bind(discount.get_meta("discount_rate")))
 
-func _on_calculator_button_pressed(button_text: String) -> void:
-	if button_text == "C":
+func get_interaction_prompt(actor: Node) -> String:
+	if actor.has_method("is_camera_fixed") and actor.is_camera_fixed():
+		return "Left click to use calculator"
+	return ""
+
+func activate(actor: Node) -> bool:
+	if not actor.has_method("is_camera_fixed") or not actor.is_camera_fixed():
+		return false
+	return true
+
+func get_fare_value() -> int:
+	if not display.text.is_valid_float():
+		return -1
+	return roundi(float(display.text))
+
+func press_button(button_text: String) -> void:
+	if button_text == "Clear":
 		expression = ""
 		_set_value("0")
 		return
-	if button_text in ["+", "-", "*", "/"]:
+	if button_text in ["add", "subtract", "multiply", "divide"]:
+		var operator : String = {"add": "+", "subtract": "-", "multiply": "*", "divide": "/"}[button_text]
 		if expression.is_empty() and display.text.is_valid_float():
 			expression = display.text
 		if expression.is_empty():
 			return
 		if expression.right(1) in ["+", "-", "*", "/"]:
-			expression = expression.left(-1) + button_text
+			expression = expression.left(-1) + operator
 		else:
-			expression += button_text
+			expression += operator
 		_set_value(expression)
 		return
-	if button_text == "=":
+	if button_text == "Equals":
 		if expression.is_empty() or expression.right(1) in ["+", "-", "*", "/"]:
 			return
 		var calculator_expression := Expression.new()
@@ -45,17 +58,8 @@ func _on_calculator_button_pressed(button_text: String) -> void:
 		_set_value(expression)
 		return
 	if button_text.is_valid_int():
-		if expression.is_empty() or not expression.right(1).is_valid_int():
-			expression += button_text
-		else:
-			expression += button_text
+		expression += button_text
 		_set_value(expression)
-
-func _on_discount_pressed(discount_rate: float) -> void:
-	if not expression.is_valid_float():
-		return
-	expression = str(roundi(float(expression) * (1.0 - discount_rate)))
-	_set_value(expression)
 
 func _set_value(value: String) -> void:
 	stored_value = value

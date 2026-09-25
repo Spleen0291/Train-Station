@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=3 uid="uid://cawcvgdbk6seh"]
+
+[ext_resource type="Script" uid="uid://dfvy2kenqexdx" path="res://scenes/ticket_system/ticket_stack.gd" id="1_stack"]
+[ext_resource type="Script" path="res://scenes/ticket_system/ticket_coach.gd" id="2_coach"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wxmac"]
+size = Vector3(0.072, 0.126, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8kv58"]
+albedo_color = Color(0.3764706, 0.6431373, 0.38039216, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_23lj1"]
+material = SubResource("StandardMaterial3D_8kv58")
+size = Vector3(0.072, 0.126, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23lj1"]
+albedo_color = Color(0.47058824, 0.7176471, 0.9098039, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4icol"]
+material = SubResource("StandardMaterial3D_23lj1")
+size = Vector3(0.072, 0.126, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lockc"]
+albedo_color = Color(0.9098039, 0.7764706, 0.42745098, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_uijhl"]
+material = SubResource("StandardMaterial3D_lockc")
+size = Vector3(0.072, 0.126, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_srtry"]
+albedo_color = Color(0.8509804, 0.54509807, 0.2901961, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6hpig"]
+material = SubResource("StandardMaterial3D_srtry")
+size = Vector3(0.072, 0.126, 0.1)
+
+[node name="Ticket Stack" type="Node3D"]
+script = ExtResource("1_stack")
+destination = "Destination"
+
+[node name="DestinationLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+visible = false
+pixel_size = 0.001
+billboard = 1
+modulate = Color(0.84435934, 0.14897251, 0.2632536, 1)
+text = "Destination"
+outline_size = 4
+
+[node name="Geneal" type="StaticBody3D" parent="." node_paths=PackedStringArray()]
+script = ExtResource("2_coach")
+coach_type = "General"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Geneal"]
+shape = SubResource("BoxShape3D_wxmac")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Geneal"]
+mesh = SubResource("BoxMesh_23lj1")
+skeleton = NodePath("../..")
+
+[node name="Sleeper" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
+script = ExtResource("2_coach")
+coach_type = "Sleeper"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sleeper"]
+shape = SubResource("BoxShape3D_wxmac")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sleeper"]
+mesh = SubResource("BoxMesh_4icol")
+skeleton = NodePath("../..")
+
+[node name="AC Chair Car" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2)
+script = ExtResource("2_coach")
+coach_type = "AC Chair Car"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AC Chair Car"]
+shape = SubResource("BoxShape3D_wxmac")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AC Chair Car"]
+mesh = SubResource("BoxMesh_uijhl")
+skeleton = NodePath("../..")
+
+[node name="First Class" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+script = ExtResource("2_coach")
+coach_type = "First Class"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="First Class"]
+shape = SubResource("BoxShape3D_wxmac")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="First Class"]
+mesh = SubResource("BoxMesh_6hpig")
+skeleton = NodePath("../..")

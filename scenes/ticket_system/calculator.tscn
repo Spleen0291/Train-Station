@@ -1,20 +1,348 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfyn3bwsuvpy6"]
+[gd_scene load_steps=13 format=3 uid="uid://b6th6d6oswwcf"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nt5wq"]
-albedo_color = Color(0.18920377, 0.3163548, 0.15001294, 1)
+[ext_resource type="Script" uid="uid://dsb8xn417aq5s" path="res://scenes/ticket_system/calculator.gd" id="1_calculator"]
+[ext_resource type="Script" uid="uid://clanxdsxauxex" path="res://scenes/ticket_system/calculator_button.gd" id="2_calculator_button"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_nt5wq"]
-material = SubResource("StandardMaterial3D_nt5wq")
-size = Vector3(0.12, 0.02, 0.1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2trht"]
+albedo_color = Color(0.5425027, 0.57523453, 0.21565896, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ljn0m"]
-size = Vector3(0.12, 0.02, 0.1)
+[sub_resource type="PlaneMesh" id="PlaneMesh_cb2gu"]
+material = SubResource("StandardMaterial3D_2trht")
+size = Vector2(0.2, 0.12)
 
-[node name="calculator" type="StaticBody3D" groups=["Calculator"]]
+[sub_resource type="BoxShape3D" id="BoxShape3D_nfxmt"]
+size = Vector3(0.02, 0.007, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f2din"]
+albedo_color = Color(0.23753911, 0.23753914, 0.23753911, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7pqaf"]
+material = SubResource("StandardMaterial3D_f2din")
+size = Vector3(0.02, 0.007, 0.02)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_nfxmt"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7pqaf"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_nfxmt")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2trht"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cb2gu"]
+resource_local_to_scene = true
+albedo_color = Color(0.26657522, 0.2665752, 0.2665752, 1)
+albedo_texture = SubResource("ViewportTexture_2trht")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nfxmt"]
+material = SubResource("StandardMaterial3D_cb2gu")
+size = Vector2(0.1, 0.05)
+
+[node name="Calculator" type="Node3D"]
+script = ExtResource("1_calculator")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_nt5wq")
-skeleton = NodePath("../CollisionShape3D")
+mesh = SubResource("PlaneMesh_cb2gu")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_ljn0m")
+[node name="1" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012941044, 0.007, -0.04237413)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="1"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="1"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="1"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "1"
+font_size = 96
+outline_size = 16
+
+[node name="2" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012941044, 0.007, -0.014539672)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="2"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="2"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="2"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "2"
+font_size = 96
+outline_size = 16
+
+[node name="3" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012941044, 0.007, 0.015695835)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="3"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="3"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="3"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "3"
+font_size = 96
+outline_size = 16
+
+[node name="add" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012941044, 0.007, 0.042892203)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="add"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="add"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="add"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "+"
+font_size = 96
+outline_size = 16
+
+[node name="4" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01428449, 0.007, -0.04204052)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="4"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="4"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="4"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "4"
+font_size = 96
+outline_size = 16
+
+[node name="5" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01428449, 0.007, -0.015173333)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="5"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="5"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="5"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "5"
+font_size = 96
+outline_size = 16
+
+[node name="6" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01428449, 0.007, 0.015762223)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="6"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="6"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="6"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "6"
+font_size = 96
+outline_size = 16
+
+[node name="subtract" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01428449, 0.007, 0.04283036)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="subtract"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="subtract"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="subtract"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "-"
+font_size = 96
+outline_size = 16
+
+[node name="7" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04437811, 0.007, -0.042420805)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="7"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="7"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="7"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "7"
+font_size = 96
+outline_size = 16
+
+[node name="8" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04437811, 0.007, -0.0153637715)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="8"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="8"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="8"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "8"
+font_size = 96
+outline_size = 16
+
+[node name="9" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04437811, 0.007, 0.016281778)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="9"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="9"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="9"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "9"
+font_size = 96
+outline_size = 16
+
+[node name="multiply" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04437811, 0.007, 0.043237932)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="multiply"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="multiply"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="multiply"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "*"
+font_size = 96
+outline_size = 16
+
+[node name="Clear" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07126967, 0.007, -0.042196117)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Clear"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Clear"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="Clear"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "C"
+font_size = 96
+outline_size = 16
+
+[node name="0" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07126967, 0.007, -0.01466882)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="0"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="0"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="0"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "0"
+font_size = 96
+outline_size = 16
+
+[node name="Equals" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07126967, 0.007, 0.015822807)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Equals"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Equals"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="Equals"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "="
+font_size = 96
+outline_size = 16
+
+[node name="divide" type="StaticBody3D" parent="." groups=["Calculator"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07126967, 0.007, 0.04267347)
+script = ExtResource("2_calculator_button")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="divide"]
+shape = SubResource("BoxShape3D_nfxmt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="divide"]
+mesh = SubResource("BoxMesh_7pqaf")
+
+[node name="Label3D" type="Label3D" parent="divide"]
+transform = Transform3D(-4.371139e-08, 1, 4.371139e-08, 0, -4.371139e-08, 1, 1, 4.371139e-08, 1.9106855e-15, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "/"
+font_size = 96
+outline_size = 16
+
+[node name="Calculator Screen" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0.065, 0.002, 0)
+material_override = SubResource("StandardMaterial3D_7pqaf")
+mesh = SubResource("PlaneMesh_nfxmt")
+skeleton = NodePath("../SubViewport")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(1024, 512)
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Calculator Text" type="Label" parent="SubViewport/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 128
+text = "120+200"
+horizontal_alignment = 1
+vertical_alignment = 1

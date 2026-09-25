@@ -2,10 +2,16 @@ extends StaticBody3D
 
 @export var item_name := "Cassette"
 @export_multiline var phrase := ""   # empty string = a "blank" cassette
+@export var label_text: String = ""
+
+@onready var cassette_label = $Label3D
 
 var is_held := false
 var original_parent: Node3D = null
 var original_transform: Transform3D
+
+func _ready() -> void:
+	cassette_label.text = label_text
 
 func pickup(hold_position: Node3D) -> void:
 	if is_held:

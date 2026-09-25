@@ -22,7 +22,6 @@ var cabinet_position := Vector3.ZERO
 @onready var fare_label: Label = $SubViewport/TicketUI/Content/FareLabel
 @onready var coach_label: Label = $SubViewport/TicketUI/Content/CoachLabel
 @onready var inspect_overlay: Control = $InspectionLayer/InspectOverlay
-@onready var destination_label: Label3D = $DestinationLabel
 
 func _ready() -> void:
 	if request_board == null:
@@ -47,7 +46,6 @@ func display_ticket(requested_destination: String, requested_coach_type: String)
 	_update_fare_label()
 	coach_label.text = "COACH: " + coach_type
 	ticket_background.color = _get_coach_color(coach_type)
-	destination_label.text = to_station
 
 func set_fare(new_fare: int) -> void:
 	fare_price = new_fare

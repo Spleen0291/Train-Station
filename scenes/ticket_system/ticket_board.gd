@@ -21,7 +21,7 @@ func _build_destination_grid() -> void:
 
 	for index in destinations.size():
 		var column := index % COLUMNS
-		var row := index / COLUMNS
+		var row := index / float(COLUMNS)
 		var ticket_position := Vector3(start_x + column * COLUMN_SPACING, start_y - row * ROW_SPACING, 0.05)
 		_create_cabinet_ticket(destinations[index], ticket_position)
 

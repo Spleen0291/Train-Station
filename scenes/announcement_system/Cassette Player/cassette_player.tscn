@@ -126,6 +126,13 @@ mesh = SubResource("BoxMesh_ddmxx")
 [node name="FlapEjectedPosition" type="Marker3D" parent="Eject"]
 transform = Transform3D(1, 0, 0, 0, 0.95848215, -0.28515312, 0, 0.28515312, 0.95848215, 0.064686686, 0.026710175, -0.145692)
 
+[node name="Label3D" type="Label3D" parent="Eject"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
+pixel_size = 0.0003
+text = "^"
+font_size = 64
+outline_size = 9
+
 [node name="Rewind" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07441287, 0.06533428, 0.085869305)
 collision_layer = 4
@@ -136,6 +143,13 @@ shape = SubResource("BoxShape3D_isoxs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Rewind"]
 mesh = SubResource("BoxMesh_kbccg")
+
+[node name="Label3D" type="Label3D" parent="Rewind"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "<<"
+font_size = 64
+outline_size = 9
 
 [node name="Play" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.100314975, 0.06533428, 0.085869305)
@@ -148,6 +162,13 @@ shape = SubResource("BoxShape3D_isoxs")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Play"]
 mesh = SubResource("BoxMesh_d51qh")
 
+[node name="Label3D" type="Label3D" parent="Play"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "▶︎"
+font_size = 64
+outline_size = 9
+
 [node name="Forward" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12635596, 0.06533428, 0.085869305)
 collision_layer = 4
@@ -159,6 +180,13 @@ shape = SubResource("BoxShape3D_isoxs")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Forward"]
 mesh = SubResource("BoxMesh_te2ug")
 
+[node name="Label3D" type="Label3D" parent="Forward"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
+pixel_size = 0.0002
+text = ">>"
+font_size = 64
+outline_size = 9
+
 [node name="Stop" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15207547, 0.06533428, 0.085869305)
 collision_layer = 4
@@ -169,3 +197,10 @@ shape = SubResource("BoxShape3D_isoxs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Stop"]
 mesh = SubResource("BoxMesh_2p1kw")
+
+[node name="Label3D" type="Label3D" parent="Stop"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
+pixel_size = 0.0002
+text = "||"
+font_size = 64
+outline_size = 9
