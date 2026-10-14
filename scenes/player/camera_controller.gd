@@ -33,6 +33,9 @@ void fragment() {
 @export var cassette_recorder: Node
 @export var playing_label_duration := 5.0
 @export var POINTER_STEP_TIME := 0.15
+@export var CASSETTE_SEEK_START_INTERVAL := 0.4
+@export var CASSETTE_SEEK_MIN_INTERVAL := 0.04
+@export var CASSETTE_SEEK_ACCELERATION_TIME := 3.0
 @export var HOLD_REPEAT_INTERVAL := 0.1
 
 @onready var player_mesh: MeshInstance3D = get_parent().get_node("MeshInstance3D")
@@ -45,6 +48,7 @@ var current_cassette_text: String = ""
 var current_cassette_appended_count: int = 0
 
 var current_target: Node3D = null
+var active_mouse_hold_button: Node = null
 var current_target_shape := -1
 var current_target_position := Vector3.ZERO
 var held_item: Node3D = null
@@ -55,6 +59,8 @@ var announcement_started: bool = false
 var hold_left: bool = false
 var hold_right: bool = false
 var cassette_seek_direction: int = 0
+var cassette_seek_elapsed := 0.0
+var cassette_seek_interval := 0.0
 var left_acc: float = 0.0
 var right_acc: float = 0.0
 var last_train_key: String = ""
@@ -230,6 +236,9 @@ func _switch_inspection_view(view_name: String) -> void:
 	inspection_view = view_name
 
 func play_cassette_button(_player: CassettePlayer) -> void:
+	if is_playing:
+		_stop_cassette_action()
+		return
 	_stop_cassette_action()
 	cassette_seek_direction = 0
 	if pointer_text == "" or pointer_index >= pointer_text.length():
@@ -248,28 +257,46 @@ func play_cassette_button(_player: CassettePlayer) -> void:
 		is_playing = true
 
 func rewind_cassette_button(_player: CassettePlayer) -> void:
+	if cassette_seek_direction == -1:
+		_stop_cassette_action()
+		return
 	_stop_cassette_action()
 	_start_cassette_seek(-1)
 
 func forward_cassette_button(_player: CassettePlayer) -> void:
+	if cassette_seek_direction == 1:
+		_stop_cassette_action()
+		return
 	_stop_cassette_action()
 	_start_cassette_seek(1)
 
-func stop_cassette_button(_player: CassettePlayer) -> void:
+func stop_cassette_transport() -> void:
 	_stop_cassette_action()
 
 func _stop_cassette_action() -> void:
 	cassette_seek_direction = 0
+	cassette_seek_elapsed = 0.0
 	if pointer_timer and not pointer_timer.is_stopped():
 		pointer_timer.stop()
 	is_playing = false
 
 func _start_cassette_seek(direction: int) -> void:
 	cassette_seek_direction = direction
+	cassette_seek_elapsed = 0.0
+	cassette_seek_interval = CASSETTE_SEEK_START_INTERVAL
 	is_playing = false
 	_seek_cassette_pointer()
-	pointer_timer.wait_time = POINTER_STEP_TIME
+	pointer_timer.wait_time = cassette_seek_interval
 	pointer_timer.start()
+
+func _get_cassette_seek_interval() -> float:
+	var progress := clampf(cassette_seek_elapsed / CASSETTE_SEEK_ACCELERATION_TIME, 0.0, 1.0)
+	return lerpf(CASSETTE_SEEK_START_INTERVAL, CASSETTE_SEEK_MIN_INTERVAL, progress)
+
+func _release_active_mouse_hold() -> void:
+	if is_instance_valid(active_mouse_hold_button):
+		active_mouse_hold_button.release_hold(self)
+	active_mouse_hold_button = null
 
 func _seek_cassette_pointer() -> void:
 	pointer_index = clamp(pointer_index + cassette_seek_direction, 0, pointer_text.length())
@@ -487,6 +514,9 @@ func _collect_geometry_nodes(node: Node, result: Array[GeometryInstance3D]) -> v
 		_collect_geometry_nodes(child, result)
 
 func _input(event) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_release_active_mouse_hold()
+
 	if event.is_action_pressed("escape"):
 		if camera_is_fixed:
 			restore_camera_transform()
@@ -554,10 +584,14 @@ func _input(event) -> void:
 			_give_ticket_to_npc(current_target)
 			return
 		if current_target.has_method("activate"):
+			var activated_target := current_target
+			var activation_succeeded: bool
 			if current_target is TicketSystem:
-				current_target.activate(self, current_target_shape, current_target_position)
+				activation_succeeded = current_target.activate(self, current_target_shape, current_target_position)
 			else:
-				current_target.activate(self)
+				activation_succeeded = current_target.activate(self)
+			if activation_succeeded and activated_target.has_method("release_hold"):
+				active_mouse_hold_button = activated_target
 			current_target = null
 			prompt_label.visible = false
 			return
@@ -729,6 +763,9 @@ func _on_cassette_removed(_cassette: Node3D) -> void:
 func _on_pointer_timeout() -> void:
 	if cassette_seek_direction != 0:
 		_seek_cassette_pointer()
+		cassette_seek_elapsed += cassette_seek_interval
+		cassette_seek_interval = _get_cassette_seek_interval()
+		pointer_timer.start(cassette_seek_interval)
 		return
 
 	# advance pointer one character at a time

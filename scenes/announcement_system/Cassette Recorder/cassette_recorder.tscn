@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://fsuwltil5gas"]
+[gd_scene load_steps=28 format=3 uid="uid://fsuwltil5gas"]
 
 [ext_resource type="Script" uid="uid://ck7upcwm0ppyd" path="res://scenes/announcement_system/Cassette Recorder/cassette_recorder.gd" id="1_772dj"]
 [ext_resource type="Script" uid="uid://bud2v7mo128j4" path="res://scenes/announcement_system/Cassette Player/cassette_flap.gd" id="2_6518o"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://delwkguyckife" path="res://scenes/announcement_system/Cassette Recorder/rewind.gd" id="5_2sry4"]
 [ext_resource type="Script" uid="uid://cwxoeecqc5pr5" path="res://scenes/announcement_system/Cassette Recorder/record.gd" id="6_msupy"]
 [ext_resource type="Script" uid="uid://d30oxphq2wfpv" path="res://scenes/announcement_system/Cassette Recorder/forward.gd" id="7_bxxji"]
-[ext_resource type="Script" uid="uid://bglxtx0ypdfb8" path="res://scenes/announcement_system/Cassette Recorder/stop.gd" id="8_man7j"]
 [ext_resource type="Script" uid="uid://de04xvao8s5xi" path="res://scenes/announcement_system/Cassette Recorder/erase.gd" id="9_erase"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0kict"]
@@ -72,13 +71,6 @@ albedo_color = Color(0.73333335, 0.078431375, 0.8, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_msupy"]
 material = SubResource("StandardMaterial3D_2sry4")
-size = Vector3(0.015, 0.01, 0.03)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s6sdy"]
-albedo_color = Color(0.6784314, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_b4jm5"]
-material = SubResource("StandardMaterial3D_s6sdy")
 size = Vector3(0.015, 0.01, 0.03)
 
 [node name="CassetteRecorder" type="Node3D" groups=["CassetteCopier"]]
@@ -210,23 +202,5 @@ mesh = SubResource("BoxMesh_msupy")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
 pixel_size = 0.0002
 text = "⌫"
-font_size = 64
-outline_size = 9
-
-[node name="Stop" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033560116, 0.043211415, 0.08509297)
-collision_layer = 4
-script = ExtResource("8_man7j")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Stop"]
-shape = SubResource("BoxShape3D_hivev")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Stop"]
-mesh = SubResource("BoxMesh_b4jm5")
-
-[node name="Label3D" type="Label3D" parent="Stop"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
-pixel_size = 0.0002
-text = "||"
 font_size = 64
 outline_size = 9

@@ -2,7 +2,9 @@ extends Node3D
 class_name CassetteRecorder
 
 const INTERACTION_LAYER := 4
-@export var BUTTON_SEEK_INTERVAL := 0.15
+@export var BUTTON_SEEK_START_INTERVAL := 0.4
+@export var BUTTON_SEEK_MIN_INTERVAL := 0.04
+@export var BUTTON_SEEK_ACCELERATION_TIME := 3.0
 
 signal cassette_removed(cassette: Node3D)
 signal slots_updated(source_phrase: String, blank_phrase: String, source_preview_index: int, blank_preview_index: int)
@@ -29,6 +31,8 @@ var recording_player: CassettePlayer = null
 var is_copying := false
 var is_erasing := false
 var button_seek_direction := 0
+var button_seek_elapsed := 0.0
+var button_seek_interval := 0.0
 
 func set_content_display(text: String) -> void:
 	content_label.text = text
@@ -200,14 +204,17 @@ func _find_recording_player() -> CassettePlayer:
 func run_copy(actor: Node = null) -> bool:
 	if held_cassette == null:
 		return false
-	if is_copying or is_erasing:
+	if is_copying:
+		stop_copying()
+		return true
+	if is_erasing:
 		return false
 	var player := _find_recording_player()
 	if player == null:
 		for candidate in get_tree().get_nodes_in_group("CassettePlayer"):
 			if candidate is CassettePlayer and candidate.cassette_seated:
-				if actor and actor.has_method("stop_cassette_button"):
-					actor.stop_cassette_button(candidate)
+				if actor and actor.has_method("stop_cassette_transport"):
+					actor.stop_cassette_transport()
 				candidate.record_button(self)
 				player = candidate if candidate.is_recording else null
 				break
@@ -256,6 +263,7 @@ func _stop_pointer_action() -> void:
 	if pointer_timer and not pointer_timer.is_stopped():
 		pointer_timer.stop()
 	button_seek_direction = 0
+	button_seek_elapsed = 0.0
 	is_copying = false
 	is_erasing = false
 
@@ -265,6 +273,9 @@ func _on_pointer_timeout() -> void:
 			_seek_left_from_button()
 		else:
 			_seek_right_from_button()
+		button_seek_elapsed += button_seek_interval
+		button_seek_interval = _get_button_seek_interval()
+		pointer_timer.start(button_seek_interval)
 		return
 	if is_erasing:
 		_erase_next_character()
@@ -302,6 +313,9 @@ func _erase_next_character() -> void:
 func rewind_button(_actor: Node) -> bool:
 	if held_cassette == null:
 		return false
+	if button_seek_direction == -1:
+		release_button_seek()
+		return true
 	_stop_pointer_action()
 	_seek_left_from_button()
 	button_seek_direction = -1
@@ -311,15 +325,28 @@ func rewind_button(_actor: Node) -> bool:
 func forward_button(_actor: Node) -> bool:
 	if held_cassette == null:
 		return false
+	if button_seek_direction == 1:
+		release_button_seek()
+		return true
 	_stop_pointer_action()
 	_seek_right_from_button()
 	button_seek_direction = 1
 	_start_button_seek_timer()
 	return true
 
+func release_button_seek() -> void:
+	if button_seek_direction != 0:
+		_stop_pointer_action()
+
 func _start_button_seek_timer() -> void:
-	pointer_timer.wait_time = BUTTON_SEEK_INTERVAL
+	button_seek_elapsed = 0.0
+	button_seek_interval = BUTTON_SEEK_START_INTERVAL
+	pointer_timer.wait_time = button_seek_interval
 	pointer_timer.start()
+
+func _get_button_seek_interval() -> float:
+	var progress := clampf(button_seek_elapsed / BUTTON_SEEK_ACCELERATION_TIME, 0.0, 1.0)
+	return lerpf(BUTTON_SEEK_START_INTERVAL, BUTTON_SEEK_MIN_INTERVAL, progress)
 
 func _seek_left_from_button() -> void:
 	if is_copying and source_cassette != null:

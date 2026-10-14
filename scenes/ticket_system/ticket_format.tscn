@@ -1,0 +1,122 @@
+[gd_scene load_steps=3 format=3 uid="uid://cco4qlfxp4jpl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thbj0"]
+albedo_color = Color(0.68070865, 0.5059652, 0.24079666, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_44x3g"]
+material = SubResource("StandardMaterial3D_thbj0")
+size = Vector3(0.124, 0.003, 0.228)
+
+[node name="Ticket Format" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_44x3g")
+
+[node name="From(Hindi)" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -0.027820176, 0.01, 0.06765227)
+pixel_size = 0.0003
+text = "Kaalnagar(hindi)"
+font_size = 26
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="From(English)" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -0.015206205, 0.01, 0.06726145)
+pixel_size = 0.0003
+text = "Kaalnagar"
+font_size = 26
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="To(Hindi)" type="Label3D" parent="."]
+transform = Transform3D(0.015393152, -0.9998815, -4.370621e-08, 0, -4.371139e-08, 1, -0.9998815, -0.015393152, -6.7285605e-10, 0.0032207128, 0.01, 0.06750355)
+pixel_size = 0.0003
+text = "Sri ganganagar(hindi)"
+font_size = 26
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="To(English)" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0.016244313, 0.01, 0.06767746)
+pixel_size = 0.0003
+text = "Sri ganganagar"
+font_size = 26
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="TO" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -0.015206205, 0.01, -0.041000515)
+pixel_size = 0.0003
+text = "TO"
+font_size = 26
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="Station pair code" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -0.034661278, 0.01, -0.035208635)
+pixel_size = 0.0003
+text = "67 B"
+font_size = 26
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="Serial Number" type="Label3D" parent="."]
+transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 0.0030333847, 0.01, -0.07688624)
+pixel_size = 0.0003
+text = "12345"
+font_size = 112
+outline_size = 9
+
+[node name="Travel Code and year" type="Label3D" parent="."]
+transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 0, 0.01, 0.07986463)
+pixel_size = 0.0003
+text = "SC 1 2003 6"
+font_size = 24
+outline_size = 9
+
+[node name="Route Line" type="Label3D" parent="."]
+transform = Transform3D(-1, 8.742278e-08, 3.821371e-15, 0, -4.371139e-08, 1, 8.742278e-08, 1, 4.371139e-08, 0, 0.01, 0.09052365)
+pixel_size = 0.0003
+text = "VIA GDV BVRM"
+font_size = 24
+outline_size = 9
+
+[node name="Rupee(hindi)" type="Label3D" parent="."]
+transform = Transform3D(0.015393152, -0.9998815, -4.370621e-08, 0, -4.371139e-08, 1, -0.9998815, -0.015393152, -6.7285605e-10, 0.030998709, 0.01, 0.06545392)
+pixel_size = 0.0003
+text = "Ru"
+font_size = 24
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="Rupee(english)" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0.031316414, 0.01, 0.053293772)
+pixel_size = 0.0003
+text = "Rs"
+font_size = 24
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="Amount" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0.031316414, 0.01, 0.03561216)
+pixel_size = 0.0003
+text = "3.50"
+font_size = 24
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="Coach code(english)" type="Label3D" parent="."]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0.031316414, 0.01, -0.008487847)
+pixel_size = 0.0003
+text = "2"
+font_size = 24
+outline_size = 9
+horizontal_alignment = 0
+
+[node name="Coach code(hindi)" type="Label3D" parent="."]
+transform = Transform3D(0.015393152, -0.9998815, -4.370621e-08, 0, -4.371139e-08, 1, -0.9998815, -0.015393152, -6.7285605e-10, 0.030998709, 0.01, -0.018884532)
+pixel_size = 0.0003
+text = "Do"
+font_size = 24
+outline_size = 9
+horizontal_alignment = 0

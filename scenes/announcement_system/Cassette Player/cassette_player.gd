@@ -61,7 +61,6 @@ func play_button(actor: Node) -> bool:
 	_stop_recorder_copying()
 	if is_recording:
 		stop_recording()
-	actor.stop_cassette_button(self)
 	actor.play_cassette_button(self)
 	return true
 
@@ -76,8 +75,8 @@ func record_button(actor: Node) -> bool:
 	if is_recording:
 		stop_recording()
 		return true
-	if actor.has_method("stop_cassette_button"):
-		actor.stop_cassette_button(self)
+	if actor.has_method("stop_cassette_transport"):
+		actor.stop_cassette_transport()
 	is_recording = true
 	recording_mode_changed.emit(true)
 	return true
@@ -86,7 +85,6 @@ func rewind_button(actor: Node) -> bool:
 	if not cassette_seated or not actor.has_method("rewind_cassette_button"):
 		return false
 	_stop_recorder_copying()
-	actor.stop_cassette_button(self)
 	actor.rewind_cassette_button(self)
 	return true
 
@@ -94,17 +92,7 @@ func forward_button(actor: Node) -> bool:
 	if not cassette_seated or not actor.has_method("forward_cassette_button"):
 		return false
 	_stop_recorder_copying()
-	actor.stop_cassette_button(self)
 	actor.forward_cassette_button(self)
-	return true
-
-func stop_button(actor: Node) -> bool:
-	if is_recording:
-		stop_recording()
-		return true
-	if not cassette_seated or not actor.has_method("stop_cassette_button"):
-		return false
-	actor.stop_cassette_button(self)
 	return true
 
 func stop_recording() -> void:

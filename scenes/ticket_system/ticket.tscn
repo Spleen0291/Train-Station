@@ -105,9 +105,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_display")
 
 [node name="InspectionLayer" type="CanvasLayer" parent="."]
 layer = 10
+visible = false
 
 [node name="InspectOverlay" type="Control" parent="InspectionLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cxx3l0ernprhq"]
+[gd_scene load_steps=24 format=3 uid="uid://cxx3l0ernprhq"]
 
 [ext_resource type="Script" uid="uid://dplb3e03u53ia" path="res://scenes/announcement_system/Cassette Player/cassette_player.gd" id="1_kvgqo"]
 [ext_resource type="Script" uid="uid://cskn1wr7op84s" path="res://scenes/announcement_system/Cassette Player/eject.gd" id="2_eject"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://5xf5y3daoihj" path="res://scenes/announcement_system/Cassette Player/play.gd" id="4_play"]
 [ext_resource type="Script" uid="uid://43013l8xx65u" path="res://scenes/announcement_system/Cassette Player/rewind.gd" id="6_rewind"]
 [ext_resource type="Script" uid="uid://dedvdf6woogg8" path="res://scenes/announcement_system/Cassette Player/forward.gd" id="7_forward"]
-[ext_resource type="Script" uid="uid://c4a8k601r2xly" path="res://scenes/announcement_system/Cassette Player/stop.gd" id="8_stop"]
 [ext_resource type="Script" uid="uid://bud2v7mo128j4" path="res://scenes/announcement_system/Cassette Player/cassette_flap.gd" id="9_flap"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvgqo"]
@@ -63,13 +62,6 @@ albedo_color = Color(0.2, 0.2, 0.2, 1)
 material = SubResource("StandardMaterial3D_51ty4")
 size = Vector3(0.015, 0.01, 0.03)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s6sdy"]
-albedo_color = Color(0.6784314, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_2p1kw"]
-material = SubResource("StandardMaterial3D_s6sdy")
-size = Vector3(0.015, 0.01, 0.03)
-
 [node name="Cassette Player" type="Node3D" groups=["CassettePlayer"]]
 script = ExtResource("1_kvgqo")
 
@@ -110,7 +102,7 @@ mesh = SubResource("BoxMesh_rjcby")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.10034153, 0.06626666, -0.045727096)
 
 [node name="Eject" type="StaticBody3D" parent="." groups=["CassetteEject"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.049611524, 0.06533428, 0.085869305)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07029736, 0.06533428, 0.07870606)
 collision_layer = 4
 script = ExtResource("2_eject")
 
@@ -134,7 +126,7 @@ font_size = 64
 outline_size = 9
 
 [node name="Rewind" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07441287, 0.06533428, 0.085869305)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.095098704, 0.06533428, 0.07870606)
 collision_layer = 4
 script = ExtResource("6_rewind")
 
@@ -152,7 +144,7 @@ font_size = 64
 outline_size = 9
 
 [node name="Play" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.100314975, 0.06533428, 0.085869305)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12100081, 0.06533428, 0.07870606)
 collision_layer = 4
 script = ExtResource("4_play")
 
@@ -170,7 +162,7 @@ font_size = 64
 outline_size = 9
 
 [node name="Forward" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12635596, 0.06533428, 0.085869305)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1470418, 0.06533428, 0.07870606)
 collision_layer = 4
 script = ExtResource("7_forward")
 
@@ -184,23 +176,5 @@ mesh = SubResource("BoxMesh_te2ug")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
 pixel_size = 0.0002
 text = ">>"
-font_size = 64
-outline_size = 9
-
-[node name="Stop" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15207547, 0.06533428, 0.085869305)
-collision_layer = 4
-script = ExtResource("8_stop")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Stop"]
-shape = SubResource("BoxShape3D_isoxs")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Stop"]
-mesh = SubResource("BoxMesh_2p1kw")
-
-[node name="Label3D" type="Label3D" parent="Stop"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0)
-pixel_size = 0.0002
-text = "||"
 font_size = 64
 outline_size = 9

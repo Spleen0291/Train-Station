@@ -3,7 +3,9 @@ class_name RecorderRecordButton
 
 func get_interaction_prompt(_actor: Node) -> String:
 	var recorder := get_parent() as CassetteRecorder
-	return "Left click to record cassette" if recorder and recorder.held_cassette and not recorder.is_copying and not recorder.is_erasing else ""
+	if recorder == null or recorder.held_cassette == null or recorder.is_erasing:
+		return ""
+	return "Left click to stop recording" if recorder.is_copying else "Left click to record cassette"
 
 func activate(actor: Node) -> bool:
 	var recorder := get_parent() as CassetteRecorder
